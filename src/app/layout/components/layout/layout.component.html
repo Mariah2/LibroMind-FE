@@ -1,0 +1,18 @@
+<mat-sidenav-container class="h-full">
+
+    <mat-sidenav #sidenav role="navigation" class="h-full block d-lg-none">
+        <mat-drawer-container autosize>
+            <a mat-button class="flex h-full items-center rounded-none h-16" routerLink="/dashboard"
+                routerLinkActive="bg-primary text-white">Dashboard</a>
+        </mat-drawer-container>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="h-full bg-light-grey flex-col justify-items-center">
+        <app-navbar (sidenavToggle)="toggleSidenav()"></app-navbar>
+
+        <div class="max-w-[1920px] m-auto w-full px-16">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>
