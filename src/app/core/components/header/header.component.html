@@ -1,0 +1,52 @@
+<mat-toolbar class="mb-8 px-8 flex" color="primary">
+    <button class="h-full rounded-none flex flex-1 items-center" mat-icon-button>
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <a [routerLink]="['/']" class="h-full flex flex-1 hover:cursor-pointer justify-center">
+        <mat-icon fontSet="material-icons-outlined"
+            class="text-4xl h-full w-fit flex items-center mr-1">local_library</mat-icon>
+        <span class="leading-5 mt-3 text-2xl font-mono font-bold">Libro<br>Mind</span>
+    </a>
+
+    <div class="h-full flex flex-1 gap-5 justify-end">
+        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold"
+            [routerLink]="['/dashboard']" routerLinkActive="active">Books
+        </a>
+
+        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold"
+            [routerLink]="['/dashboard']" routerLinkActive="active">Libraries
+        </a>
+
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon class="h-full flex items-center">account_circle</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item [routerLink]="['/register']">
+                <mat-icon>person_add</mat-icon>
+                <span>Register</span>
+            </button>
+
+            <button mat-menu-item [routerLink]="['/login']">
+                <mat-icon>login</mat-icon>
+                <span>Login</span>
+            </button>
+
+            <button mat-menu-item [routerLink]="['/dashboard']">
+                <mat-icon>person</mat-icon>
+                <span>Profile</span>
+            </button>
+
+            <button mat-menu-item [routerLink]="['/dashboard']">
+                <mat-icon>bookmarks</mat-icon>
+                <span>Books to read</span> 
+            </button>
+ 
+            <button mat-menu-item [routerLink]="['/dashboard']">
+                <mat-icon>logout</mat-icon>
+                <span>Logout</span> 
+            </button>
+        </mat-menu>
+    </div>
+</mat-toolbar>

@@ -1,0 +1,57 @@
+<div class="bg-secondary h-full px-96 py-16">
+    <form class="grid grid-cols-2 h-full justify-items-center bg-white rounded-md mat-elevation-z20">
+        <h1 class="col-span-2 mt-6 mb-1 text-2xl font-bold">Register</h1>
+
+        <span class="col-span-2 font-mono font-medium text-cyan-800">Please fill out this form in order to create an
+            account.</span>
+
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput placeholder="Placeholder">
+        </mat-form-field>
+
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput placeholder="Placeholder">
+        </mat-form-field>
+
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Placeholder">
+        </mat-form-field>
+
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput placeholder="Placeholder">
+        </mat-form-field>
+
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon class="mr-3">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>Confirm password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon class="mr-3">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>Birth Date</mat-label>
+            <input matInput [matDatepicker]="picker">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-button class="w-40 h-10 col-span-2 bg-secondary hover:bg-secondary-alt text-white">
+            Register
+        </button>
+    </form>
+</div>
