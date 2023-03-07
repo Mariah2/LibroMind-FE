@@ -9,7 +9,7 @@ import { FooterComponent } from "../footer/footer.component";
   selector: 'app-layout',
   template: `
     <app-header></app-header>
-    <main class="h-full">
+    <main class="h-[calc(100%-64px)]">
       <router-outlet></router-outlet>
     </main>
     <app-footer></app-footer>

@@ -10,7 +10,10 @@ module.exports = {
         "secondary-alt": "#7BAEBF",
       },
       borderColor: {
-        "secondary": "#658e9c"
+        "primary-darker": "#c1ae81"
+      },
+      fontSize: {
+        "icon-large": "256px"
       }
     },
   },

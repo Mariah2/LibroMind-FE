@@ -1,1 +1,30 @@
-<p>login works!</p>
+<div class="bg-secondary h-full px-96 py-16">
+    <form class="flex flex-col items-center h-full justify-items-center bg-white rounded-md mat-elevation-z20">
+        <h1 class="mt-6 mb-1 text-2xl font-bold my-5">Login</h1>
+
+        <mat-form-field class="h-16 w-64 my-5" color="accent" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email">
+        </mat-form-field>
+
+        <mat-form-field class="h-16 w-64 my-5" color="accent" appearance="outline">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon class="mr-3 text-[#757575]">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+
+        <button mat-button class="w-40 h-10 bg-secondary hover:bg-secondary-alt text-white my-5">
+            Login
+        </button>
+
+        <span class="font-mono font-medium text-cyan-800 my-5">
+            You don't have an account?
+        </span>
+        <a mat-button class="" [routerLink]="['/register']">
+            <span class="font-bold font-mono">Register</span>
+        </a>
+    </form>
+</div>

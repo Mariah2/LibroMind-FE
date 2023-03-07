@@ -7,22 +7,22 @@
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
             <mat-label>First Name</mat-label>
-            <input matInput placeholder="Placeholder">
+            <input matInput placeholder="First Name">
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
             <mat-label>Last Name</mat-label>
-            <input matInput placeholder="Placeholder">
+            <input matInput placeholder="Last Name">
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
             <mat-label>Email</mat-label>
-            <input matInput placeholder="Placeholder">
+            <input matInput placeholder="Email">
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
             <mat-label>Phone Number</mat-label>
-            <input matInput placeholder="Placeholder">
+            <input matInput placeholder="Phone Number">
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
@@ -30,7 +30,7 @@
             <input matInput [type]="hide ? 'password' : 'text'">
             <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
-                <mat-icon class="mr-3">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-icon class="mr-3 text-[#757575]">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
         </mat-form-field>
 
@@ -39,7 +39,7 @@
             <input matInput [type]="hide ? 'password' : 'text'">
             <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
-                <mat-icon class="mr-3">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-icon class="mr-3 text-[#757575]" color="dark-background">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
         </mat-form-field>
 
@@ -53,5 +53,12 @@
         <button mat-button class="w-40 h-10 col-span-2 bg-secondary hover:bg-secondary-alt text-white">
             Register
         </button>
+
+        <span class="col-span-2 font-mono font-medium text-cyan-800 mt-5">
+            Already have an account?
+        </span>
+        <a mat-button class="col-span-2" [routerLink]="['/login']">
+            <span class="font-bold font-mono">Login</span>
+        </a>
     </form>
 </div>
