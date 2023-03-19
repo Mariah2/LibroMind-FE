@@ -4,9 +4,36 @@
 
 @import "custom-theme.scss";
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.tab {
+  tab-size: 8;
+}
 
 .mat-mdc-form-field .mdc-notched-outline__notch {
-    border-right: 0px !important;
-  }
+  border-right: 0px !important;
+}
+
+.terms-conditions::-webkit-scrollbar {
+  width: 4px;
+}
+
+.terms-conditions::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+}
+
+.terms-conditions::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+:hover.terms-conditions::-webkit-scrollbar-thumb {
+  background-color: gray;
+}

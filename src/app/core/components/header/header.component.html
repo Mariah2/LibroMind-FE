@@ -1,24 +1,24 @@
-<mat-toolbar class="px-8 flex" color="primary">
-    <button class="h-full rounded-none flex flex-1 items-center" mat-icon-button>
+<mat-toolbar class="relative px-8 mb-4 flex bg-primary text-secondary">
+    <button class="h-full rounded-none flex flex-1 items-center text-secondary" mat-icon-button>
         <mat-icon>menu</mat-icon>
     </button>
 
-    <a [routerLink]="['/']" class="h-full flex flex-1 hover:cursor-pointer justify-center">
+    <a [routerLink]="['/']" class="h-full flex flex-1 hover:cursor-pointer justify-center text-secondary">
         <mat-icon fontSet="material-icons-outlined"
             class="text-4xl h-full w-fit flex items-center mr-1">local_library</mat-icon>
         <span class="leading-5 mt-3 text-2xl font-mono font-bold">Libro<br>Mind</span>
     </a>
 
     <div class="h-full flex flex-1 gap-5 justify-end">
-        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold"
+        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary"
             [routerLink]="['/dashboard']" routerLinkActive="active">Books
         </a>
 
-        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold"
+        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary"
             [routerLink]="['/dashboard']" routerLinkActive="active">Libraries
         </a>
 
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu text-secondary">
             <mat-icon class="h-full flex items-center">account_circle</mat-icon>
         </button>
 

@@ -27,9 +27,19 @@ export const routes: Route[] = [
       .then((m) => m.AboutComponent)
   },
   {
+    path: "contact",
+    loadComponent: () => import("../../../pages/contact/contact.component")
+      .then((m) => m.ContactComponent)
+  },
+  {
     path: "how-to-borrow",
     loadComponent: () => import("../../../pages/how-to-borrow/how-to-borrow.component")
       .then((m) => m.HowToBorrowComponent)
+  },
+  {
+    path: "terms-and-conditions",
+    loadComponent: () => import("../../../pages/terms-and-conditions/terms-and-conditions.component")
+      .then((m) => m.TermsAndConditionsComponent)
   },
   {
     path: "",
