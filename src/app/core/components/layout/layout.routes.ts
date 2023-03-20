@@ -22,6 +22,11 @@ export const routes: Route[] = [
       .then((m) => m.BooksComponent)
   },
   {
+    path: "libraries",
+    loadComponent: () => import("../../../pages/libraries/libraries.component")
+      .then((m) => m.LibrariesComponent)
+  },
+  {
     path: "dashboard",
     loadComponent: () => import("../../../pages/dashboard/dashboard.component")
       .then((m) => m.DashboardComponent),
