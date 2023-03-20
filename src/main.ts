@@ -1,7 +1,11 @@
-import { enableProdMode } from '@angular/core';
+import { enableProdMode, importProvidersFrom } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
 import { provideRouter, Route } from "@angular/router";
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
+
+import { MatSnackBarModule } from "@angular/material/snack-bar";
+import { MatDialogModule } from "@angular/material/dialog";
 
 import { environment } from './environments/environment';
 import { AppComponent } from './app/app.component';
@@ -21,7 +25,9 @@ if (environment.production) {
 bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(appRoutes),
-    provideAnimations()
+    provideHttpClient(),
+    provideAnimations(),
+    importProvidersFrom(MatSnackBarModule, MatDialogModule)
   ]
 })
   .catch(err => console.error(err));

@@ -17,6 +17,11 @@ export const routes: Route[] = [
       .then((m) => m.RegisterComponent)
   },
   {
+    path: "books",
+    loadComponent: () => import("../../../pages/books/books.component")
+      .then((m) => m.BooksComponent)
+  },
+  {
     path: "dashboard",
     loadComponent: () => import("../../../pages/dashboard/dashboard.component")
       .then((m) => m.DashboardComponent),

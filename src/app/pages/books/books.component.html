@@ -1,0 +1,3 @@
+<div *ngIf="books$" class="flex">
+    <app-book-card *ngFor="let book of books$ | async" [book]="book"></app-book-card>
+</div>
