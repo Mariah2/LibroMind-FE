@@ -16,10 +16,10 @@ module.exports = {
         "icon-large": "256px"
       },
       height: {
-        "fullscreen": "calc(100vh - 96px)"
+        "fullscreen": "calc(100vh - 160px)"
       },
       maxHeight: {
-        "fullscreen": "calc(100vh - 96px)"
+        "fullscreen": "calc(100vh - 160px)"
       }
     },
   },
