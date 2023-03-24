@@ -12,6 +12,12 @@ module.exports = {
       borderColor: {
         "primary-darker": "#c9ae9f"
       },
+      textColor:{
+        "primary": "#f2e1d8",
+        "secondary": "#4d5056",
+        "secondary-lighter": "#cacbcc",
+        "secondary-darker": "#34373c"
+      },
       fontSize: {
         "icon-large": "256px"
       },

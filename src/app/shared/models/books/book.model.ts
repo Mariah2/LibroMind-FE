@@ -1,3 +1,6 @@
+import AuthorModel from "../authors/author.model";
+import PublisherModel from "../publishers/publisher.model";
+
 export default interface BookModel {
     id: number;
     authorId: number;
@@ -7,4 +10,7 @@ export default interface BookModel {
     description: string;
     pagesNumber: number;
     coverUrl : string | undefined;
+    rating: number;
+    author: AuthorModel;
+    publisher: PublisherModel;
 }

@@ -1,18 +1,24 @@
 <mat-card *ngIf="book" class="max-w-xs w-72 m-5">
-    <img src={{book.coverUrl}} alt="Cover photo" class="h-32 object-contain my-5 drop-shadow-lg">
-    <div class="grid grid-rows-2 justify-items-center">
-        <div></div>
-        <span class="text-xl font-sans font-bold">{{book.title}}</span>
-        <span class="text-gray-500 text-lg font-sans">by Author</span>
-    </div>
-    <div class="grid grid-rows-2 justify-items-center my-5">
-        <button mat-button class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
+    <a [routerLink]="['/books', book.id]" class="flex flex-col align-items-center">
+        <img src={{book.coverUrl}} alt="Cover photo" class="h-32 object-contain my-5 drop-shadow-lg">
+        <div class="grid grid-rows-2 justify-items-center">
+            <div></div>
+            <a [routerLink]="['/books', book.id]" class="text-xl font-sans font-bold">{{book.title}}</a>
+            <span matTooltipClass="multiline-tooltip"
+                matTooltip="Nationalitate: {{book.author.nationality}}&#10;Data de naștere: {{book.author.birthDate | date}}"
+                matTooltipPosition="right" class="text-gray-500 text-lg font-sans">{{book.author.firstName}}
+                {{book.author.lastName}}</span>
+        </div>
+    </a>
+    <div class="grid grid-rows-2 justify-items-center mb-4">
+        <span class="flex justify-center text-secondary m-2 items-center">
+            <span class="mr-2 font-sans font-semibold">{{book.rating === 0 ? 'No reviews' : book.rating + '/10'}}</span>
+            <mat-icon>star</mat-icon>
+        </span>
+        <button mat-button
+            class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
             <span class="mr-2 font-sans font-semibold">I want to read</span>
             <mat-icon>bookmarks</mat-icon>
-        </button>
-        <button mat-button class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
-            <span class="mr-2 font-sans font-semibold">7.2/10</span>
-            <mat-icon>star</mat-icon>
         </button>
     </div>
 </mat-card>

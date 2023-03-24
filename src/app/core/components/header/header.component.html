@@ -1,51 +1,51 @@
 <mat-toolbar class="relative px-8 mb-4 flex bg-primary text-secondary">
-    <button class="h-full rounded-none flex flex-1 items-center text-secondary" mat-icon-button>
+    <button class="h-full rounded-none flex flex-1 items-center text-secondary-darker" mat-icon-button>
         <mat-icon>menu</mat-icon>
     </button>
 
-    <a [routerLink]="['/']" class="h-full flex flex-1 hover:cursor-pointer justify-center text-secondary">
+    <a [routerLink]="['/']" class="h-full flex flex-1 hover:cursor-pointer justify-center text-secondary-darker">
         <mat-icon fontSet="material-icons-outlined"
             class="text-4xl h-full w-fit flex items-center mr-1">local_library</mat-icon>
         <span class="leading-5 mt-3 text-2xl font-mono font-bold">Libro<br>Mind</span>
     </a>
 
     <div class="h-full flex flex-1 gap-5 justify-end">
-        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary"
+        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
             [routerLink]="['/books']" routerLinkActive="active">Books
         </a>
 
-        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary"
+        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
             [routerLink]="['/libraries']" routerLinkActive="active">Libraries
         </a>
 
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu text-secondary">
-            <mat-icon class="h-full flex items-center">account_circle</mat-icon>
+        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon class="h-full flex items-center text-secondary-darker">account_circle</mat-icon>
         </button>
 
-        <mat-menu #menu="matMenu">
+        <mat-menu #menu="matMenu" class="text-secondary-darker">
             <button mat-menu-item [routerLink]="['/register']">
-                <mat-icon>person_add</mat-icon>
-                <span>Register</span>
+                <mat-icon class="text-secondary-darker">person_add</mat-icon>
+                <span class="text-secondary-darker">Register</span>
             </button>
 
             <button mat-menu-item [routerLink]="['/login']">
-                <mat-icon>login</mat-icon>
-                <span>Login</span>
+                <mat-icon class="text-secondary-darker">login</mat-icon>
+                <span class="text-secondary-darker">Login</span>
             </button>
 
             <button mat-menu-item [routerLink]="['/dashboard']">
-                <mat-icon>person</mat-icon>
-                <span>Profile</span>
+                <mat-icon class="text-secondary-darker">person</mat-icon>
+                <span class="text-secondary-darker">Profile</span>
             </button>
 
             <button mat-menu-item [routerLink]="['/dashboard']">
-                <mat-icon>bookmarks</mat-icon>
-                <span>Books to read</span> 
+                <mat-icon class="text-secondary-darker">bookmarks</mat-icon>
+                <span class="text-secondary-darker">Books to read</span> 
             </button>
  
             <button mat-menu-item [routerLink]="['/dashboard']">
-                <mat-icon>logout</mat-icon>
-                <span>Logout</span> 
+                <mat-icon class="text-secondary-darker">logout</mat-icon>
+                <span class="text-secondary-darker">Logout</span> 
             </button>
         </mat-menu>
     </div>

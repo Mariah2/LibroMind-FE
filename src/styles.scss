@@ -18,6 +18,10 @@ body {
   tab-size: 8;
 }
 
+.multiline-tooltip {
+  white-space: pre-line;
+}
+
 .mat-mdc-form-field .mdc-notched-outline__notch {
   border-right: 0px !important;
 }
