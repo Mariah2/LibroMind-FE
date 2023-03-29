@@ -1,8 +1,7 @@
 <mat-card *ngIf="book" class="max-w-xs w-72 m-5">
     <a [routerLink]="['/books', book.id]" class="flex flex-col align-items-center">
         <img src={{book.coverUrl}} alt="Cover photo" class="h-32 object-contain my-5 drop-shadow-lg">
-        <div class="grid grid-rows-2 justify-items-center">
-            <div></div>
+        <div *ngIf="book.author" class="grid grid-rows-2 justify-items-center">
             <a [routerLink]="['/books', book.id]" class="text-xl font-sans font-bold">{{book.title}}</a>
             <span matTooltipClass="multiline-tooltip"
                 matTooltip="Nationalitate: {{book.author.nationality}}&#10;Data de naștere: {{book.author.birthDate | date}}"

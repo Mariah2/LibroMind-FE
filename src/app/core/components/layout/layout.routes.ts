@@ -2,11 +2,6 @@ import { Route } from "@angular/router";
 
 export const routes: Route[] = [
   {
-    path: "not-found",
-    loadComponent: () =>
-      import("../../../pages/not-found/not-found.component").then((m) => m.NotFoundComponent)
-  },
-  {
     path: "login",
     loadComponent: () => import("../../../pages/login/login.component")
       .then((m) => m.LoginComponent)
@@ -32,6 +27,11 @@ export const routes: Route[] = [
       .then((m) => m.LibrariesComponent)
   },
   {
+    path: "library/:libraryId/books",
+    loadComponent: () => import("../../../pages/library-books/library-books.component")
+      .then((m) => m.LibraryBooksComponent)
+  },
+  {
     path: "dashboard",
     loadComponent: () => import("../../../pages/dashboard/dashboard.component")
       .then((m) => m.DashboardComponent),
@@ -55,6 +55,11 @@ export const routes: Route[] = [
     path: "terms-and-conditions",
     loadComponent: () => import("../../../pages/terms-and-conditions/terms-and-conditions.component")
       .then((m) => m.TermsAndConditionsComponent)
+  },
+  {
+    path: "not-found",
+    loadComponent: () =>
+      import("../../../pages/not-found/not-found.component").then((m) => m.NotFoundComponent)
   },
   {
     path: "",

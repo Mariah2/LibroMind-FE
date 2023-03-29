@@ -3,17 +3,18 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import LibraryModel from 'src/app/shared/models/libraries/library.model';
+
+import BookModel from 'src/app/shared/models/books/book.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class LibrariesService {
+export class LibraryBooksService {
   apiUrl = environment.apiUrl;
 
   constructor(private readonly http: HttpClient) { }
 
-  getLibraries(): Observable<LibraryModel[]> {
-    return this.http.get<LibraryModel[]>(`${this.apiUrl}/library/details`);
+  getLibraryBooks(libraryId: number): Observable<BookModel[]> {
+    return this.http.get<BookModel[]>(`${this.apiUrl}/library/${libraryId}/books`);
   }
 }

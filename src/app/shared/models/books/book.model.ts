@@ -1,4 +1,5 @@
 import AuthorModel from "../authors/author.model";
+import LibraryBookModel from "../library-books/library-book.model";
 import PublisherModel from "../publishers/publisher.model";
 
 export default interface BookModel {
@@ -13,4 +14,5 @@ export default interface BookModel {
     rating: number;
     author: AuthorModel;
     publisher: PublisherModel;
+    libraryBooks: LibraryBookModel[];
 }

@@ -2,14 +2,17 @@
     <div *ngFor="let library of libraries$ | async">
         <mat-card class="w-96 m-5 justify-items-center">
             <div class="grid grid-rows-2 justify-items-center">
-                <span class="text-xl font-sans font-bold mx-5">{{library.name}}</span>
-                <span class="text-secondary text-lg font-sans">Str Principala, nr. 101</span>
+                <a [routerLink]="['/library', library.id, 'books']" class="text-xl font-sans font-bold mx-5">{{library.name}}</a>
+                <a href={{library.address.map}} class="text-secondary text-lg font-sans w-80 overflow-hidden whitespace-nowrap 
+                text-ellipsis">{{library.address.street}}, {{library.address.number}},
+                    {{library.address.city}}, {{library.address.county}}, {{library.address.country}}
+                </a>
                 <button mat-button class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt
                  text-white m-2 items-center rounded-3xl">
                     <span class="mr-2 font-sans font-semibold">My library</span>
                     <mat-icon>star</mat-icon>
                 </button>
-            </div>    
+            </div>
         </mat-card>
     </div>
 </div>

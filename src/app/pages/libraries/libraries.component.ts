@@ -8,11 +8,12 @@ import { LibrariesService } from 'src/app/core/services/libraries/libraries.serv
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-libraries',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatCardModule],
+  imports: [CommonModule, MatIconModule, MatCardModule, RouterLink],
   templateUrl: './libraries.component.html',
   styleUrls: ['./libraries.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
