@@ -1,0 +1,28 @@
+<form *ngIf="user$ | async as user" class="profile-form">
+    <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+        <mat-label>First Name</mat-label>
+        <input matInput [disabled]="!isEditModeEnabled" placeholder="First Name" [value]="user.firstName">
+    </mat-form-field>
+
+    <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+        <mat-label>Last Name</mat-label>
+        <input matInput [disabled]="isEditModeEnabled" placeholder="Last Name" [value]="user.lastName">
+    </mat-form-field>
+
+    <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput disabled placeholder="Email" [value]="user.email">
+    </mat-form-field>
+
+    <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+        <mat-label>Phone Number</mat-label>
+        <input matInput [disabled]="isEditModeEnabled" placeholder="Phone Number" [value]="user.phone">
+    </mat-form-field>
+
+    <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+        <mat-label>Birth Date</mat-label>
+        <input matInput [disabled]="isEditModeEnabled" [matDatepicker]="picker" [value]="user.birthDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+</form>

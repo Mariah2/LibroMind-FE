@@ -1,4 +1,5 @@
 import { Route } from "@angular/router";
+import { CanActivate } from "../../services/authentication/can-activate.service";
 
 export const routes: Route[] = [
   {
@@ -37,9 +38,21 @@ export const routes: Route[] = [
       .then((m) => m.DashboardComponent),
   },
   {
+    path: "profile",
+    loadComponent: () => import("../../../pages/profile/profile.component")
+      .then((m) => m.ProfileComponent),
+    canActivate: [CanActivate]
+  },
+  {
+    path: "user/books",
+    loadComponent: () => import("../../../pages/books-to-read/books-to-read.component")
+      .then((m) => m.BooksToReadComponent),
+    canActivate: [CanActivate]
+  },
+  {
     path: "about",
     loadComponent: () => import("../../../pages/about/about.component")
-      .then((m) => m.AboutComponent)
+      .then((m) => m.AboutComponent),
   },
   {
     path: "contact",

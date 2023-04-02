@@ -23,29 +23,29 @@
         </button>
 
         <mat-menu #menu="matMenu" class="text-secondary-darker">
-            <button mat-menu-item [routerLink]="['/register']">
+            <button *ngIf="!isLoggedIn" mat-menu-item [routerLink]="['/register']">
                 <mat-icon class="text-secondary-darker">person_add</mat-icon>
                 <span class="text-secondary-darker">Register</span>
             </button>
 
-            <button mat-menu-item [routerLink]="['/login']">
+            <button *ngIf="!isLoggedIn" mat-menu-item [routerLink]="['/login']">
                 <mat-icon class="text-secondary-darker">login</mat-icon>
                 <span class="text-secondary-darker">Login</span>
             </button>
 
-            <button mat-menu-item [routerLink]="['/dashboard']">
+            <button *ngIf="isLoggedIn" mat-menu-item [routerLink]="['/profile']">
                 <mat-icon class="text-secondary-darker">person</mat-icon>
                 <span class="text-secondary-darker">Profile</span>
             </button>
 
-            <button mat-menu-item [routerLink]="['/dashboard']">
+            <button *ngIf="isLoggedIn" mat-menu-item [routerLink]="['/user/books']">
                 <mat-icon class="text-secondary-darker">bookmarks</mat-icon>
-                <span class="text-secondary-darker">Books to read</span> 
+                <span class="text-secondary-darker">Books to read</span>
             </button>
- 
-            <button mat-menu-item [routerLink]="['/dashboard']">
+
+            <button *ngIf="isLoggedIn" mat-menu-item [routerLink]="['/dashboard']" (click)="logout()">
                 <mat-icon class="text-secondary-darker">logout</mat-icon>
-                <span class="text-secondary-darker">Logout</span> 
+                <span class="text-secondary-darker">Logout</span>
             </button>
         </mat-menu>
     </div>

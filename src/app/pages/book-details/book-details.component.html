@@ -24,25 +24,23 @@
             </button>
         </div>
     </div>
-    <div>
-        <div>
-            <mat-form-field appearance="fill">
-                <mat-label>Library</mat-label>
-                <mat-select>
-                  <mat-option *ngFor="let libraryBook of libraryBooks$ | async">
+    <div class="pt-4">
+        <mat-form-field color="accent" appearance="fill" *ngIf="book$ | async as book">
+            <mat-label>Library</mat-label>
+            <mat-select>
+                <mat-option></mat-option>
+                <mat-option [value]="libraryBook.library" *ngFor="let libraryBook of book.bookLibraries">
                     {{libraryBook.library.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-        </div>
-        <div class="mt-36 text-secondary">
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="mt-36 text-secondary -translate-y-24">
             <div class="text-2xl font-medium pb-2">Detalii carte</div>
             <div class="text-sm py-2 border-b-2 border-b-zinc-300">Categorie: beletristică</div>
             <div class="text-sm py-2 border-b-2 border-b-zinc-300">Numar Pagini: {{book.pagesNumber}}</div>
             <div class="text-sm py-2 border-b-2 border-b-zinc-300">Editura: {{book.publisher.name}}</div>
-            <div class="text-sm py-2 border-b-2 border-b-zinc-300">Data publicației: {{book.publishingDate | date}}
-            </div>
-
+            <div class="text-sm py-2 border-b-2 border-b-zinc-300">Data publicației: {{book.publishingDate | date}}</div>
         </div>
     </div>
 

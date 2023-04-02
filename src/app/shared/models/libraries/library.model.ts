@@ -1,4 +1,4 @@
-import AddressModel from "../address/address.model";
+import AddressModel from "../addresses/address.model";
 
 export default interface LibraryModel {
     id: number;

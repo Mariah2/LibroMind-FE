@@ -14,5 +14,6 @@ export default interface BookModel {
     rating: number;
     author: AuthorModel;
     publisher: PublisherModel;
-    libraryBooks: LibraryBookModel[];
+    bookLibraries: LibraryBookModel[];
+    isMarkedToRead: boolean | undefined;
 }

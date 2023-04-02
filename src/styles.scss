@@ -39,5 +39,17 @@ body {
 }
 
 :hover.terms-conditions::-webkit-scrollbar-thumb {
-  background-color: gray;
+  background-color: #4d5056;
+}
+
+.profile-form .mdc-floating-label {
+  color: #4d5056 !important;
+}
+
+.profile-form .mdc-text-field__input {
+  color: #4d5056 !important;
+}
+
+.profile-form .mat-from-field-appearance-outline {
+  color: green !important;
 }
