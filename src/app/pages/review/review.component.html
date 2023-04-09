@@ -1,0 +1,12 @@
+<mat-card *ngIf="review" class="bg-white w-96 ml-16 m-4 p-2">
+    <div *ngIf="review.user" class="flex items-center text-secondary">
+        <mat-icon class="mr-2">account_circle</mat-icon>
+        {{review.user.firstName + " " + review.user.lastName}}
+        <span class="ml-2">{{review.addedDate | date}}</span>
+    </div>
+    <div class="flex">
+        <span class="mr-2">{{review.rating}} out of 10</span>
+        <mat-icon class="text-secondary">star</mat-icon>
+    </div>
+    <span class="text-secondary">Comment: </span>"{{review.text}}"
+</mat-card>

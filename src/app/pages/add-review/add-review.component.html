@@ -1,0 +1,20 @@
+<form *ngIf="user" [formGroup]="reviewForm" (submit)="onSubmit()">
+    <div class="flex items-center text-secondary">
+        <mat-icon class="mr-2">account_circle</mat-icon>
+        {{user.firstName + " " + user.lastName}}, let us know how you liked this book:
+    </div>
+    <div class="flex mt-2">
+        <input formControlName="rating" class="mr-2 w-7 border-zinc-200 border-2 h-5"><span class="mr-2">out of 10</span>
+        <mat-icon class="text-secondary">star</mat-icon>
+    </div>
+    <div class="flex mt-2">
+        <span class="text-secondary">Comment: </span>
+        <input formControlName="text" class="border-zinc-300 border-2 h-6 ml-2" placeholder="Leave a comment...">
+    </div>
+    <div class="grid justify-items-center">
+        <button mat-button class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt 
+            text-white mt-4 items-center rounded-3xl">
+            <span class="text-sm mr-2 font-sans font-semibold">Submit review</span>
+        </button>
+    </div>
+</form>

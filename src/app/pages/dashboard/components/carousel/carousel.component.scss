@@ -1,0 +1,34 @@
+.carousel {
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; /* optional: enables smooth scrolling on iOS devices */
+}
+
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+}
+
+img {
+  width: 100%;
+  height: auto;
+}
+.thumbnails {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.thumbnail {
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.thumbnail:last-child {
+  margin-right: 0;
+}
+
+.selected {
+  border: 2px solid black;
+}

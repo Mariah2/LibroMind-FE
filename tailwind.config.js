@@ -14,6 +14,7 @@ module.exports = {
       },
       textColor:{
         "primary": "#f2e1d8",
+        "primary-lighter": "#fbf6f3",
         "secondary": "#4d5056",
         "secondary-lighter": "#cacbcc",
         "secondary-darker": "#34373c"

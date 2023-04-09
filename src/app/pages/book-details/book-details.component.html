@@ -1,48 +1,60 @@
-<div class="grid grid-cols-3 justify-items-center py-8 max-h-fullscreen overflow-auto terms-conditions"
-    *ngIf="book$ | async as book">
-    <img src={{book.coverUrl}} alt="Cover photo" class="h-96 object-contain my-5 drop-shadow-lg">
-    <div>
-        <div class="text-4xl mt-4">{{book.title}}</div>
-        <div class="text-xl text-secondary-darker">{{book.author.firstName}} {{book.author.lastName}}</div>
-        <div class="flex items-center my-5">
-            <span class="mr-2 font-sans font-semibold text-secondary">{{book.rating === 0 ? 'No reviews' : book.rating +
-                '/10'}}</span>
-            <mat-icon class="text-secondary">star</mat-icon>
-            <span class="mr-2 font-sans font-semibold text-secondary">(15 recenzii)</span>
+<div *ngIf="book$ | async as book" class="flex flex-col max-h-fullscreen overflow-auto terms-conditions">
+    <div class="grid grid-cols-3 justify-items-center py-8">
+        <img src={{book.coverUrl}} alt="Cover photo" class="h-96 object-contain my-5 drop-shadow-lg">
+        <div>
+            <div class="text-4xl mt-4">{{book.title}}</div>
+            <div *ngIf="book.author" class="text-xl text-secondary-darker">{{book.author.firstName}}
+                {{book.author.lastName}}</div>
+            <div class="flex items-center my-5">
+                <span class="mr-2 font-sans font-semibold text-secondary">{{book.rating === 0 ? 'No reviews' :
+                    book.rating +
+                    '/10'}}</span>
+                <mat-icon class="text-secondary">star</mat-icon>
+                <span class="mr-2 font-sans font-semibold text-secondary">(15 recenzii)</span>
+            </div>
+            <div class="text-justify text-sm">{{book.description}}</div>
+            <div class="grid grid-cols-2 justify-items-center my-5">
+                <button mat-button
+                    class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
+                    <span class="mr-2 font-sans font-semibold">I want to read</span>
+                    <mat-icon>bookmarks</mat-icon>
+                </button>
+                <button mat-button [routerLink]="['/borrow', book.id]"
+                    class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
+                    <span class="mr-2 font-sans font-semibold">Borrow</span>
+                    <mat-icon>menu_book</mat-icon>
+                </button>
+            </div>
         </div>
-        <div class="text-justify text-sm">{{book.description}}</div>
-        <div class="grid grid-cols-2 justify-items-center my-5">
-            <button mat-button
-                class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
-                <span class="mr-2 font-sans font-semibold">I want to read</span>
-                <mat-icon>bookmarks</mat-icon>
-            </button>
-            <button mat-button
-                class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
-                <span class="mr-2 font-sans font-semibold">Borrow</span>
-                <mat-icon>menu_book</mat-icon>
-            </button>
+        <div class="pt-4">
+            <mat-form-field color="accent" appearance="fill" *ngIf="book$ | async as book">
+                <mat-label>Library</mat-label>
+                <mat-select>
+                    <mat-option></mat-option>
+                    <mat-option [value]="libraryBook.library" *ngFor="let libraryBook of book.bookLibraries">
+                        {{libraryBook.library.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="mt-36 text-secondary -translate-y-24">
+                <div class="text-2xl font-medium pb-2">Detalii carte</div>
+                <div class="text-sm py-2 border-b-2 border-b-zinc-300" *ngFor="let bookCategory of book.bookCategories">
+                    Categorie: {{bookCategory.category.name}}</div>
+                <div class="text-sm py-2 border-b-2 border-b-zinc-300">Numar Pagini: {{book.pagesNumber}}</div>
+                <div *ngIf="book.publisher" class="text-sm py-2 border-b-2 border-b-zinc-300">Editura:
+                    {{book.publisher.name}}</div>
+                <div class="text-sm py-2 border-b-2 border-b-zinc-300">
+                    Data publicației: {{book.publishingDate | date}}
+                </div>
+            </div>
         </div>
     </div>
-    <div class="pt-4">
-        <mat-form-field color="accent" appearance="fill" *ngIf="book$ | async as book">
-            <mat-label>Library</mat-label>
-            <mat-select>
-                <mat-option></mat-option>
-                <mat-option [value]="libraryBook.library" *ngFor="let libraryBook of book.bookLibraries">
-                    {{libraryBook.library.name}}
-                </mat-option>
-            </mat-select>
-        </mat-form-field>
-
-        <div class="mt-36 text-secondary -translate-y-24">
-            <div class="text-2xl font-medium pb-2">Detalii carte</div>
-            <div class="text-sm py-2 border-b-2 border-b-zinc-300">Categorie: beletristică</div>
-            <div class="text-sm py-2 border-b-2 border-b-zinc-300">Numar Pagini: {{book.pagesNumber}}</div>
-            <div class="text-sm py-2 border-b-2 border-b-zinc-300">Editura: {{book.publisher.name}}</div>
-            <div class="text-sm py-2 border-b-2 border-b-zinc-300">Data publicației: {{book.publishingDate | date}}</div>
+    <div class="flex flex-col bg-secondary w-full">
+        <div class="text-2xl text-primary-lighter ml-16 mt-2">Reviews</div>
+        <app-add-review class="bg-white w-96 ml-16 m-4 p-2" *ngIf="user$ | async as user" [user]="user"></app-add-review>
+        <div *ngFor="let review of book.reviews">
+            <app-review [review]="review"></app-review>
         </div>
     </div>
-
-
 </div>

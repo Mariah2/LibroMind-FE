@@ -14,14 +14,14 @@
             <span class="mr-2 font-sans font-semibold">{{book.rating === 0 ? 'No reviews' : book.rating + '/10'}}</span>
             <mat-icon>star</mat-icon>
         </span>
-        <button *ngIf="book.isMarkedToRead" mat-button (click)="addBookToRead()"
+        <button *ngIf="book.isMarkedToRead || book.isMarkedToRead === undefined" mat-button (click)="addBookToRead()"
             class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
             <span class="mr-2 font-sans font-semibold">I want to read</span>
             <mat-icon>bookmarks</mat-icon>
         </button>
-        <button *ngIf="!book.isMarkedToRead" mat-button
+        <button *ngIf="book.isMarkedToRead === false" mat-button
             class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
-            <span class="mr-2 font-sans font-semibold">Remove from my list</span>
+            <span class="mr-2 font-sans font-semibold text-xs">Remove from my list</span>
             <mat-icon class="material-icons-outlined">bookmarks</mat-icon>
         </button>
     </div>

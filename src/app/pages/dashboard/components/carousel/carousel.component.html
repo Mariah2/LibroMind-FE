@@ -1,0 +1,11 @@
+<div class="carousel">
+    <div class="slide" *ngFor="let image of images; let i = index;">
+      <img [src]="image" alt="carousel image">
+    </div>
+  </div>
+  <div class="thumbnails">
+    <div class="thumbnail" *ngFor="let image of images; let i = index;" [class.selected]="images[i]" (click)="images[i]">
+      <img [src]="image" alt="carousel thumbnail">
+    </div>
+  </div>
+

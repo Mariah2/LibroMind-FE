@@ -28,18 +28,21 @@ export class BooksComponent implements OnInit {
       next: async (books: BookModel[]) => {
         this.booksToReadService.setBooksToRead();
 
-        this.booksToReadService.getBooksToRead().subscribe({
-          next: (booksToRead: BookModel[]) => {
-            books.forEach(book => {
-              const val = 
-              book.isMarkedToRead = booksToRead.find(btr => btr.id === book.id) === undefined;
-            });
+        this.booksSubject.next(books);
+      }
+    });
 
-            if (booksToRead && booksToRead.length > 0) {
-              this.booksSubject.next(books);
-            }
-          }
-        });
+    this.booksToReadService.getBooksToRead().subscribe({
+      next: (booksToRead: BookModel[]) => {
+        if (booksToRead && booksToRead.length > 0) {
+          const updatedBooks = this.booksSubject.getValue();
+
+          updatedBooks.forEach(book => {
+            book.isMarkedToRead = booksToRead.find(btr => btr.id === book.id) === undefined;
+          });
+
+          this.booksSubject.next(updatedBooks);
+        }
       }
     });
   }

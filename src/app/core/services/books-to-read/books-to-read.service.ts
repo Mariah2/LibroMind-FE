@@ -68,11 +68,20 @@ export class BooksToReadService implements OnInit {
 
     this.http.post(`${this.apiUrl}/bookuser`, request, this.httpOptions).subscribe({
       next: () => {
+        this.getUserBooks(request.userId).subscribe({
+          next: (value: BookModel[]) => {
+            this.booksToRead.next(value);
+          }
+        })
         console.log("Success");
       },
       error: (response: HttpErrorResponse) => {
         console.error(response.status);
       }
     });
+  }
+
+  removeUserBook(bookId: number) {
+    
   }
 }

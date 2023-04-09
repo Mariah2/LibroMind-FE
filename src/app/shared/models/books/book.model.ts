@@ -1,6 +1,8 @@
 import AuthorModel from "../authors/author.model";
+import BookCategoryModel from "../book-categories/book-category.model";
 import LibraryBookModel from "../library-books/library-book.model";
 import PublisherModel from "../publishers/publisher.model";
+import ReviewModel from "../reviews/review.model";
 
 export default interface BookModel {
     id: number;
@@ -14,6 +16,8 @@ export default interface BookModel {
     rating: number;
     author: AuthorModel;
     publisher: PublisherModel;
+    reviews: ReviewModel[];
     bookLibraries: LibraryBookModel[];
+    bookCategories: BookCategoryModel[];
     isMarkedToRead: boolean | undefined;
 }

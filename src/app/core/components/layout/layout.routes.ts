@@ -50,6 +50,12 @@ export const routes: Route[] = [
     canActivate: [CanActivate]
   },
   {
+    path: "borrow",
+    loadComponent: () => import("../../../pages/borrow-details/borrow-details.component")
+      .then((m) => m.BorrowDetailsComponent),
+    canActivate: [CanActivate]
+  },
+  {
     path: "about",
     loadComponent: () => import("../../../pages/about/about.component")
       .then((m) => m.AboutComponent),

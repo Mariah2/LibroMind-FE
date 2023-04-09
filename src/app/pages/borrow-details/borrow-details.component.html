@@ -1,0 +1,16 @@
+<div *ngIf="book$ | async as book">
+    <div class="flex flex-col align-items-center">
+        <img src={{book.coverUrl}} alt="Cover photo" class="h-32 object-contain my-5 drop-shadow-lg">
+        <div *ngIf="book.author" class="grid grid-rows-2 justify-items-center">
+            <span class="text-xl font-sans font-bold">{{book.title}}</span>
+            <span class="text-lg font-sans font-medium">{{book.author.lastName}}</span>
+        </div>
+    </div>
+
+    <div class="grid grid-rows-2 justify-items-center mb-4">
+        <span class="flex justify-center text-secondary m-2 items-center">
+            <span class="mr-2 font-sans font-semibold">{{book.rating === 0 ? 'No reviews' : book.rating + '/10'}}</span>
+            <mat-icon>star</mat-icon>
+        </span>
+    </div>
+</div>

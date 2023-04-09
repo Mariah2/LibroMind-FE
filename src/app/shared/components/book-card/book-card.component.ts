@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -16,8 +16,7 @@ import { AuthenticationService } from 'src/app/core/services/authentication/auth
   standalone: true,
   imports: [CommonModule, MatCardModule, MatIconModule, RouterLink, MatTooltipModule],
   templateUrl: './book-card.component.html',
-  styleUrls: ['./book-card.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./book-card.component.scss']
 })
 export class BookCardComponent { 
   @Input() book: BookModel = {} as BookModel;
