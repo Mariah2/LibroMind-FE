@@ -51,9 +51,15 @@ export const routes: Route[] = [
     canActivate: [CanActivateUser]
   },
   {
-    path: "borrow",
-    loadComponent: () => import("../../../pages/borrow-details/borrow-details.component")
-      .then((m) => m.BorrowDetailsComponent),
+    path: "librarian/borrowings",
+    loadComponent: () => import("../../../pages/librarian-borrowings/librarian-borrowings.component")
+      .then((m) => m.LibrarianBorrowingsComponent),
+    canActivate: [CanActivateLibrarian]
+  },
+  {
+    path: "user/borrowings",
+    loadComponent: () => import("../../../pages/user-borrowings/user-borrowings.component")
+      .then((m) => m.UserBorrowingsComponent),
     canActivate: [CanActivateUser]
   },
   {

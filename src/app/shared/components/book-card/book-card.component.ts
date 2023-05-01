@@ -42,7 +42,11 @@ export class BookCardComponent {
     }
   }
 
-  removeBookToRead(bookId: number): void {
-    const userId = this.authenticationService.getUserInfoData().id;
-  }
+  // removeBookToRead(bookId: number): void {
+  //   const userId = this.authenticationService.getUserInfoData().id;
+
+  //   if(userId) {
+  //     this.booksToReadService.removeUserBook()
+  //   }
+  // }
 }

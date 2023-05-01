@@ -66,7 +66,4 @@ export class BooksComponent implements OnInit {
     })
   }
 
-  addBook() {
-
-  }
 }

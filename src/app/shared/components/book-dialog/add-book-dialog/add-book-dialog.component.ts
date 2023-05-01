@@ -13,6 +13,7 @@ import { UsersService } from 'src/app/core/services/users/users.service';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { LibraryBooksService } from 'src/app/core/services/library-books/library-books.service';
 import { BooksService } from 'src/app/core/services/books/books.service';
+import { AddBookCardComponent } from '../../book-card/add-book-card/add-book-card.component';
 
 @Component({
   selector: 'app-add-book-dialog',
@@ -26,7 +27,8 @@ import { BooksService } from 'src/app/core/services/books/books.service';
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
-    BookCardComponent
+    BookCardComponent,
+    AddBookCardComponent
   ]
 })
 export class AddBookDialogComponent implements OnInit {

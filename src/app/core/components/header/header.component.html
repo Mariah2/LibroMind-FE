@@ -14,12 +14,14 @@
             [routerLink]="['/books']" routerLinkActive="active">Books
         </a>
 
-        <a *ngIf="!isLoggedIn || userInfo.role === 'user'" mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
+        <a *ngIf="!isLoggedIn || userInfo.role === 'user'" mat-button
+            class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
             [routerLink]="['/libraries']" routerLinkActive="active">Libraries
         </a>
 
-        <a *ngIf="userInfo.role === 'librarian'" mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
-            [routerLink]="['/about']" routerLinkActive="active">Borrowings
+        <a *ngIf="userInfo.role === 'librarian'" mat-button
+            class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
+            [routerLink]="['/librarian/borrowings']" routerLinkActive="active">Borrowings
         </a>
 
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
@@ -45,6 +47,11 @@
             <button *ngIf="isLoggedIn" mat-menu-item [routerLink]="['/user/books']">
                 <mat-icon class="text-secondary-darker">bookmarks</mat-icon>
                 <span class="text-secondary-darker">Books to read</span>
+            </button>
+
+            <button *ngIf="isLoggedIn && userInfo.role === 'user'" mat-menu-item [routerLink]="['/user/borrowings']">
+                <mat-icon class="text-secondary-darker">bookmarks</mat-icon>
+                <span class="text-secondary-darker">My borrowings</span>
             </button>
 
             <button *ngIf="isLoggedIn" mat-menu-item [routerLink]="['/dashboard']" (click)="logout()">

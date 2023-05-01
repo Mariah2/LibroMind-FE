@@ -1,0 +1,28 @@
+<div class="overflow-y-auto h-full">
+    <mat-card *ngFor="let borrowing of borrowings$ | async" class="flex flex-row w-3/4">
+        <img [src]="borrowing.book.coverUrl" class="h-32">
+
+        <div class="flex flex-col justify-between">
+            <div>
+                <h1>{{borrowing.book.title}}</h1>
+                <span>de {{borrowing.book.author.firstName}} {{borrowing.book.author.lastName}}</span>
+            </div>
+
+            <div class="flex flex-col">
+                <span>Utilizator: {{borrowing.user.email}}</span>
+                <span>Data limita a returnarii: {{borrowing.returnDate | date}}</span>
+            </div>
+        </div>
+
+        <button type="button" mat-button *ngIf="borrowing.hasReturnedBook === null"
+            (click)="acceptBorrowing(borrowing.id)">Accept</button>
+        <button type="button" mat-button *ngIf="borrowing.wasExtensionRequested === true"
+            (click)="extendBorrowing(borrowing.id)">Extend</button>
+        <button type="button" mat-button *ngIf="borrowing.hasReturnedBook === false"
+            (click)="returnBorrowing(borrowing.id)">Return</button>
+
+        <button mat-icon-button *ngIf="borrowing.hasReturnedBook === null" (click)="rejectBorrowing(borrowing.id)">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-card>
+</div>

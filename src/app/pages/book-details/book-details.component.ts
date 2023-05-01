@@ -16,10 +16,13 @@ import { AuthenticationService } from 'src/app/core/services/authentication/auth
 import { UsersService } from 'src/app/core/services/users/users.service';
 import { ReviewComponent } from '../review/review.component';
 import { AddReviewComponent } from '../add-review/add-review.component';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { BorrowDialog } from 'src/app/shared/components/borrow-dialog/borrow-dialog.component';
 import LibraryModel from 'src/app/shared/models/libraries/library.model';
-import BorrowBookModel from 'src/app/shared/models/borrow-book/borrow-bookmodel';
+import AddBorrowingModel from 'src/app/shared/models/borrowings/add-borrowing.model';
+import LibraryBookModel from 'src/app/shared/models/library-books/library-book.model';
+import { LibraryBooksService } from 'src/app/core/services/library-books/library-books.service';
+import BorrowingConfirmationModel from 'src/app/shared/models/borrowings/borrowing-confirmation.model';
 
 
 @Component({
@@ -27,11 +30,11 @@ import BorrowBookModel from 'src/app/shared/models/borrow-book/borrow-bookmodel'
   standalone: true,
   imports: [
     AddReviewComponent,
-    CommonModule, 
-    MatCardModule, 
-    MatIconModule, 
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
     MatTooltipModule,
-    MatSelectModule, 
+    MatSelectModule,
     RouterLink,
     ReviewComponent],
   templateUrl: './book-details.component.html',
@@ -42,15 +45,16 @@ export class BookDetailsComponent {
   private readonly authenticationService = inject(AuthenticationService);
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly bookService = inject(BooksService);
+  private readonly libraryBooksService = inject(LibraryBooksService);
   private readonly router = inject(Router);
   private readonly bookSubject = new BehaviorSubject<BookModel>({} as BookModel);
   private readonly usersService = inject(UsersService);
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) { }
 
   library: LibraryModel | null = null;
   user$: Observable<UserModel> | undefined;
-  book$ = this.bookSubject.asObservable();  
+  book$ = this.bookSubject.asObservable();
 
   ngOnInit() {
     this.bookService.getBookById(Number(this.activatedRoute.snapshot.paramMap.get('id'))).subscribe({
@@ -76,22 +80,32 @@ export class BookDetailsComponent {
   }
 
   openDialog(enterAnimationDuration: string, exitAnimationDuration: string, book: BookModel): void {
-    console.log(this.library)
     if (this.library) {
-      this.dialog.open(BorrowDialog, {
-        width: '300px',
-        enterAnimationDuration,
-        exitAnimationDuration,
-        data: 
-          ({userId: this.authenticationService.getLoggedInUser().id,
-          book: book,
-          library: this.library,
-        } as BorrowBookModel)
-      });
+      this.libraryBooksService.getBookLibrary(book.id, this.library.id).subscribe({
+        next: (bookLibrary) => {
+          if (bookLibrary.quantity > 0) {
+            this.dialog.open(BorrowDialog, {
+              width: '300px',
+              enterAnimationDuration,
+              exitAnimationDuration,
+              data:
+                ({
+                  userId: this.authenticationService.getLoggedInUser().id,
+                  bookLibraryId: bookLibrary.id,
+                  authorFullName: book.author.firstName + ' ' + book.author.lastName,
+                  bookTitle: book.title,
+                  libraryName: this.library?.name,
+                } as BorrowingConfirmationModel)
+            });
+          } else {
+            console.error("All available books have been borrowed!");
+          }
+        }
+      })
     } else {
       console.error("Please select a library!");
     }
   }
 }
 
-  
+

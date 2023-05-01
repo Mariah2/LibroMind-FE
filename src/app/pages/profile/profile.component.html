@@ -1,28 +1,39 @@
-<form *ngIf="user$ | async as user" class="profile-form">
-    <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-        <mat-label>First Name</mat-label>
-        <input matInput [disabled]="!isEditModeEnabled" placeholder="First Name" [value]="user.firstName">
-    </mat-form-field>
+<div class="bg-secondary h-full px-96 py-12">
+    <form [formGroup]="updateProfileForm" (submit)="updateUser()" *ngIf="user$ | async as user"
+        class="profile-form grid grid-cols-2 h-full justify-items-center bg-white rounded-md mat-elevation-z20">
+        <h1 class="col-span-2 mt-6 mb-1 text-2xl font-bold">Hello, {{user.email}}!</h1>
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" placeholder="First Name">
+        </mat-form-field>
 
-    <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-        <mat-label>Last Name</mat-label>
-        <input matInput [disabled]="isEditModeEnabled" placeholder="Last Name" [value]="user.lastName">
-    </mat-form-field>
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" placeholder="Last Name">
+        </mat-form-field>
 
-    <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-        <mat-label>Email</mat-label>
-        <input matInput disabled placeholder="Email" [value]="user.email">
-    </mat-form-field>
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput disabled placeholder="Email" [value]="user.email">
+        </mat-form-field>
 
-    <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-        <mat-label>Phone Number</mat-label>
-        <input matInput [disabled]="isEditModeEnabled" placeholder="Phone Number" [value]="user.phone">
-    </mat-form-field>
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phone" placeholder="Phone Number">
+        </mat-form-field>
 
-    <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-        <mat-label>Birth Date</mat-label>
-        <input matInput [disabled]="isEditModeEnabled" [matDatepicker]="picker" [value]="user.birthDate">
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-</form>
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
+            <mat-label>Birth Date</mat-label>
+            <input matInput formControlName="birthDate" [matDatepicker]="picker"
+                [value]="user.birthDate">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div class="col-span-2 flex items-center">
+            <button type="button" mat-button class="w-40 h-10 mx-5 bg-secondary hover:bg-secondary-alt text-white"
+                (click)="edit()">Edit</button>
+            <button type="submit" mat-button
+                class="w-40 h-10 mx-5 bg-secondary hover:bg-secondary-alt text-white">Save</button>
+        </div>
+    </form>
+</div>

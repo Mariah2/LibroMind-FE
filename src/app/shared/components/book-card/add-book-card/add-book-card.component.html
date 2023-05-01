@@ -1,0 +1,8 @@
+<mat-card *ngIf="book" class="max-w-xs w-48">
+    <div *ngIf="book.author" class="grid grid-rows-2 justify-items-center">
+        <a class="text-xl font-sans font-bold">{{book.title}}</a>
+        <span>{{book.author.firstName}}
+            {{book.author.lastName}}
+        </span>
+    </div>
+</mat-card>
