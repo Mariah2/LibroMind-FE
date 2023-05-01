@@ -5,7 +5,7 @@ import {
   HttpHandlerFn
 } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
+import { catchError, firstValueFrom, throwError } from 'rxjs';
 
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 
@@ -13,6 +13,22 @@ export const AuthorizationInterceptor = (request: HttpRequest<unknown>, next: Ht
   const authenticationService = inject(AuthenticationService);
   const router = inject(Router);
   const authToken = authenticationService.getToken();
+  const expiration = authenticationService.getUserInfoData().exp;
+  let isExpired = false;
+
+  firstValueFrom(authenticationService.getIsLoggedIn()).then((isLoggedIn) => {
+    if (isLoggedIn && (!expiration || (Math.floor((new Date).getTime() / 1000)) >= expiration)) {
+      console.error("Token expired");
+      authenticationService.logout();
+      isExpired = true;
+    }
+    
+    return;
+  });
+
+  if (isExpired) {
+    return next({} as HttpRequest<unknown>);
+  }
 
   request = request.clone({
     headers: request.headers.set("Authorization", `Bearer ${authToken}`),

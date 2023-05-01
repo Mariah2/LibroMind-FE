@@ -1,23 +1,33 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import BookModel from 'src/app/shared/models/books/book.model';
+import BookCardModel from 'src/app/shared/models/books/book-card.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BooksService {
-  apiUrl = environment.apiUrl;
+  private readonly http = inject(HttpClient);
 
-  constructor(private readonly http: HttpClient) { }
+  private readonly apiUrl = environment.apiUrl;
+  private readonly headers = new HttpHeaders({
+    "Content-Type": "application/json",
+  })
 
-  getBooks(): Observable<BookModel[]> {
-    return this.http.get<BookModel[]>(`${this.apiUrl}/book/details`);
+  getBookCards(): Observable<BookCardModel[]> {
+    return this.http.get<BookCardModel[]>(`${this.apiUrl}/book/cards`, { headers: this.headers });
   }
 
-  getBookById(id:number): Observable<BookModel> {
-    return this.http.get<BookModel>(`${this.apiUrl}/book/details/${id}`);
+  getBookCardsForLibraryIdByParam(libraryId: number | null, searchParam: string | null): Observable<BookCardModel[]> {
+    const params = new HttpParams().set("searchParam", searchParam ?? "");
+
+    return this.http.get<BookCardModel[]>(`${this.apiUrl}/book/cards/library/${libraryId}/filter-by`, { headers: this.headers, params: params });
+  }
+
+  getBookById(id: number): Observable<BookModel> {
+    return this.http.get<BookModel>(`${this.apiUrl}/book/details/${id}`, { headers: this.headers });
   }
 }

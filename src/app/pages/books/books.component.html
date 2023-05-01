@@ -1,3 +1,8 @@
 <div *ngIf="books$" class="grid grid-cols-4 justify-items-center max-h-fullscreen overflow-auto terms-conditions">
+    <mat-card *ngIf="userRole === 'librarian'" class="max-w-xs w-72 m-5 justify-center items-center">
+        <button (click)="openDialog('0ms', '0ms')" class="flex text-9xl text-white justify-center items-center bg-gray-300 w-24 h-24 rounded-full">
+            +
+        </button>
+    </mat-card>
     <app-book-card *ngFor="let book of books$ | async" [book]="book"></app-book-card>
 </div>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -8,11 +8,15 @@ import { environment } from 'src/environments/environment';
 import { LoginRequestModel } from 'src/app/shared/models/authentication/login-request.model';
 import { LoginResponseModel } from 'src/app/shared/models/authentication/login-response.model';
 import { RegisterRequestModel } from 'src/app/shared/models/authentication/register-request.model';
+import UserInfoModel from 'src/app/shared/models/users/user-info.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+
   private readonly authApi = `${environment.apiUrl}/authentication`;
   private readonly httpOptions = {
     headers: new HttpHeaders({
@@ -20,12 +24,8 @@ export class AuthenticationService {
     }),
   };
   private readonly tokenKey = "LibroMindToken";
-  private isLoggedIn = new BehaviorSubject(this.checkIsLoggedIn());
-
-  constructor(
-    private readonly http: HttpClient,
-    private readonly router: Router
-  ) { }
+  private readonly isLoggedIn = new BehaviorSubject(this.checkIsLoggedIn());
+  private readonly userInfoSubject = new BehaviorSubject<UserInfoModel>(this.getLoggedInUser());
 
   async login(request: LoginRequestModel): Promise<void> {
     this.http.post<LoginResponseModel>(`${this.authApi}/login`, request, this.httpOptions).subscribe({
@@ -51,25 +51,44 @@ export class AuthenticationService {
     });
   }
 
+  getLoggedInUser(): UserInfoModel {
+    const token = this.getToken();
+
+    if (token && token.length > 0) {
+      const decodedToken = this.decodeToken(token);
+
+      return {
+        id: Number(decodedToken.sub),
+        exp: Number(decodedToken.exp),
+        role: decodedToken.role
+      }
+    }
+
+    return {} as UserInfoModel;
+  }
+
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  saveToken(token: string): void {
-    localStorage.clear();
-    localStorage.setItem(this.tokenKey, token);
-
-    this.isLoggedIn.next(true);
+  getUserInfo(): Observable<UserInfoModel> {
+    return this.userInfoSubject.asObservable();
   }
 
-  getUserId(): number | undefined {
+  getUserInfoData(): UserInfoModel {
     const token = this.getToken();
 
-    if (token) {
-      return Number(this.decodeUserId(token));
+    if (token && token.length > 0) {
+      const decodedToken = this.decodeToken(token);
+
+      return {
+        id: Number(decodedToken.sub),
+        exp: Number(decodedToken.exp),
+        role: decodedToken.role
+      }
     }
 
-    return undefined;
+    return {} as UserInfoModel;
   }
 
   getIsLoggedIn(): Observable<boolean> {
@@ -92,14 +111,29 @@ export class AuthenticationService {
     localStorage.clear();
 
     this.isLoggedIn.next(false);
+    this.userInfoSubject.next({} as UserInfoModel);
 
     this.router.navigate(['/dashboard']);
   }
 
-  private decodeUserId(token: string): number {
+  private decodeToken(token: string) {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/').replace(/\s/g, '');
 
-    return (JSON.parse(decodeURIComponent(window.atob(base64)))).sub;
+    return (JSON.parse(decodeURIComponent(window.atob(base64))));
+  }
+
+  private saveToken(token: string): void {
+    const decodedToken = this.decodeToken(token);
+
+    localStorage.clear();
+    localStorage.setItem(this.tokenKey, token);
+
+    this.isLoggedIn.next(true);
+    this.userInfoSubject.next({
+      id: Number(decodedToken.sub),
+      exp: Number(decodedToken.exp),
+      role: decodedToken.role
+    })
   }
 }

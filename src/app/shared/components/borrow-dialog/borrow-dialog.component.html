@@ -1,0 +1,11 @@
+<div class="p-2 text-secondary-darker w-full">
+  <h1 mat-dialog-title>Are these the correct details?</h1>
+  <div *ngIf="data" mat-dialog-content class="flex my-4">
+    Biblioteca: {{data.library.name}}
+    Carte: {{data.book.title}}
+  </div>
+  <div mat-dialog-actions class="grid grid-cols-2 justify-center">
+    <button class mat-button mat-dialog-close (click)="closeDialog()">No!</button>
+    <button class mat-button mat-dialog-close cdkFocusInitial (click)="addBorrow()">Yes, borrow book!</button>
+  </div>
+</div>

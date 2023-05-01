@@ -3,17 +3,17 @@ import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import AddUserBookModel from 'src/app/shared/models/books-to-read/add-book-to-read.model';
-import BookModel from 'src/app/shared/models/books/book.model';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from '../authentication/authentication.service';
+import AddUserBookModel from 'src/app/shared/models/books-to-read/add-book-to-read.model';
+import BookCardModel from 'src/app/shared/models/books/book-card.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BooksToReadService implements OnInit {
   private apiUrl = environment.apiUrl;
-  private booksToRead = new BehaviorSubject<BookModel[]>([]);
+  private booksToRead = new BehaviorSubject<BookCardModel[]>([]);
   private readonly httpOptions = {
     headers: new HttpHeaders({
       "Content-Type": "application/json",
@@ -29,16 +29,16 @@ export class BooksToReadService implements OnInit {
     this.setBooksToRead();
   }
 
-  getBooksToRead(): Observable<BookModel[]> {
+  getBooksToRead(): Observable<BookCardModel[]> {
     return this.booksToRead.asObservable();
   }
 
   setBooksToRead(): void {
-    const userId = this.authenticationService.getUserId();
+    const userId = this.authenticationService.getUserInfoData().id;
 
     if (userId) {
-      this.getUserBooks(userId).subscribe({
-        next: (value: BookModel[]) => {
+      this.getBookCards(userId).subscribe({
+        next: (value: BookCardModel[]) => {
           this.booksToRead.next(value);
         }
       });
@@ -49,12 +49,8 @@ export class BooksToReadService implements OnInit {
     this.booksToRead.next([]);
   }
 
-  getUserBooks(userId: number): Observable<BookModel[]> {
-    return this.http.get<BookModel[]>(`${this.apiUrl}/user/${userId}/books`);
-  }
-
-  getUserBookById(bookId: number): Observable<BookModel[]> {
-    return this.http.get<BookModel[]>(`${this.apiUrl}/bookuser/${bookId}`);
+  getBookCards(userId: number): Observable<BookCardModel[]> {
+    return this.http.get<BookCardModel[]>(`${this.apiUrl}/book/user/${userId}`);
   }
   
   addUserBook(request: AddUserBookModel): void {
@@ -68,8 +64,8 @@ export class BooksToReadService implements OnInit {
 
     this.http.post(`${this.apiUrl}/bookuser`, request, this.httpOptions).subscribe({
       next: () => {
-        this.getUserBooks(request.userId).subscribe({
-          next: (value: BookModel[]) => {
+        this.getBookCards(request.userId).subscribe({
+          next: (value: BookCardModel[]) => {
             this.booksToRead.next(value);
           }
         })
@@ -82,6 +78,6 @@ export class BooksToReadService implements OnInit {
   }
 
   removeUserBook(bookId: number) {
-    
+    this.http.delete(`${this.apiUrl}/bookuser/${bookId}`)
   }
 }

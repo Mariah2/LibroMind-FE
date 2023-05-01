@@ -4,7 +4,7 @@ import { BooksToReadService } from "../books-to-read/books-to-read.service";
 
 import { AuthenticationService } from "./authentication.service";
 
-export const CanActivate: CanActivateFn = () => {
+export const CanActivateUser: CanActivateFn = () => {
     const authenticationService = inject(AuthenticationService);
     const booksToReadService = inject(BooksToReadService);
     const router = inject(Router);

@@ -1,4 +1,4 @@
-<div class="bg-secondary h-full px-96 py-16">
+<div class="bg-secondary h-full px-96 py-12">
     <form class="grid grid-cols-2 h-full justify-items-center bg-white rounded-md mat-elevation-z20">
         <h1 class="col-span-2 mt-6 mb-1 text-2xl font-bold">Register</h1>
 
@@ -28,7 +28,7 @@
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
             <mat-label>Password</mat-label>
             <input matInput [type]="hide ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
                 <mat-icon class="mr-3 text-[#757575]">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
@@ -37,9 +37,10 @@
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
             <mat-label>Confirm password</mat-label>
             <input matInput [type]="hide ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+            <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
-                <mat-icon class="mr-3 text-[#757575]" color="dark-background">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-icon class="mr-3 text-[#757575]" color="dark-background">{{hide ? 'visibility_off' :
+                    'visibility'}}</mat-icon>
             </button>
         </mat-form-field>
 
@@ -54,11 +55,12 @@
             Register
         </button>
 
-        <span class="col-span-2 font-mono font-medium text-secndary mt-5">
-            Already have an account?
+        <span class="col-span-2 font-mono font-medium text-secondary mt-4 mb-4">
+            Already have an account?<a mat-button class="col-span-2" [routerLink]="['/login']">
+                <span class="font-bold font-mono"> Login</span>
+            </a>
         </span>
-        <a mat-button class="col-span-2" [routerLink]="['/login']">
-            <span class="font-bold font-mono">Login</span>
-        </a>
     </form>
+
+
 </div>

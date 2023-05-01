@@ -39,10 +39,10 @@ export class ProfileComponent implements OnInit {
     private readonly router: Router) { }
 
   ngOnInit(): void {
-    const id = this.authenticationService.getUserId();
+    const id = this.authenticationService.getUserInfoData().id;
 
     if (id) {
-      this.user$ = this.usersService.getUserById(id);
+      this.user$ = this.usersService.getUserProfileById(id);
     } else {
       this.router.navigate(['/dashboard']);
 

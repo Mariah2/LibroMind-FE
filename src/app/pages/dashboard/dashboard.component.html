@@ -1,1 +1,17 @@
-<app-carousel></app-carousel>
+<div class="grid grid-cols-2 items-center h-full">
+    <div class="flex justify-center text-secondary-darker">
+        <mat-icon fontSet="material-icons-outlined"
+            class="text-icon-large h-full w-fit flex mr-1">local_library</mat-icon>
+        <span class="text-9xl font-mono font-bold">Libro<br>Mind</span>
+    </div>
+
+    <div class="grid text-2xl justify-center h-3/4 border-l-2 border-l-gray-300 items-center p-5 
+            text-zinc-700 font-serif font-bold italic text-justify">
+        <p>
+            A travel agency for the mind because as Dr. Seuss said "The more that you read, the more things you will know. The more that you learn, the more places you'll go."
+        </p>
+        <p>
+            Start searching the right book to start a new adventure <a [routerLink]="['/books']" routerLinkActive="active">here.</a>
+        </p>
+    </div>
+</div>

@@ -9,13 +9,17 @@
         <span class="leading-5 mt-3 text-2xl font-mono font-bold">Libro<br>Mind</span>
     </a>
 
-    <div class="h-full flex flex-1 gap-5 justify-end">
+    <div *ngIf="userInfo$ | async as userInfo" class="h-full flex flex-1 gap-5 justify-end">
         <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
             [routerLink]="['/books']" routerLinkActive="active">Books
         </a>
 
-        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
+        <a *ngIf="!isLoggedIn || userInfo.role === 'user'" mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
             [routerLink]="['/libraries']" routerLinkActive="active">Libraries
+        </a>
+
+        <a *ngIf="userInfo.role === 'librarian'" mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
+            [routerLink]="['/about']" routerLinkActive="active">Borrowings
         </a>
 
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">

@@ -14,12 +14,12 @@ import UserModel from 'src/app/shared/models/users/user.model';
 import { BooksService } from 'src/app/core/services/books/books.service';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import { UsersService } from 'src/app/core/services/users/users.service';
-import { ReviewsService } from 'src/app/core/services/reviews/reviews.service';
-import AddReviewModel from 'src/app/shared/models/reviews/add-review.model';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReviewComponent } from '../review/review.component';
 import { AddReviewComponent } from '../add-review/add-review.component';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import { BorrowDialog } from 'src/app/shared/components/borrow-dialog/borrow-dialog.component';
+import LibraryModel from 'src/app/shared/models/libraries/library.model';
+import BorrowBookModel from 'src/app/shared/models/borrow-book/borrow-bookmodel';
 
 
 @Component({
@@ -46,9 +46,11 @@ export class BookDetailsComponent {
   private readonly bookSubject = new BehaviorSubject<BookModel>({} as BookModel);
   private readonly usersService = inject(UsersService);
 
-  user$: Observable<UserModel> | undefined;
-  book$ = this.bookSubject.asObservable();
+  constructor(public dialog: MatDialog) {}
 
+  library: LibraryModel | null = null;
+  user$: Observable<UserModel> | undefined;
+  book$ = this.bookSubject.asObservable();  
 
   ngOnInit() {
     this.bookService.getBookById(Number(this.activatedRoute.snapshot.paramMap.get('id'))).subscribe({
@@ -62,14 +64,34 @@ export class BookDetailsComponent {
       }
     })
 
-    const id = this.authenticationService.getUserId();
+    const id = this.authenticationService.getUserInfoData().id;
 
     if (id) {
-      this.user$ = this.usersService.getUserById(id);
+      this.user$ = this.usersService.getUserProfileById(id);
     } else {
       this.router.navigate(['/dashboard']);
 
       console.error('Invalid UserId!');
     }
   }
+
+  openDialog(enterAnimationDuration: string, exitAnimationDuration: string, book: BookModel): void {
+    console.log(this.library)
+    if (this.library) {
+      this.dialog.open(BorrowDialog, {
+        width: '300px',
+        enterAnimationDuration,
+        exitAnimationDuration,
+        data: 
+          ({userId: this.authenticationService.getLoggedInUser().id,
+          book: book,
+          library: this.library,
+        } as BorrowBookModel)
+      });
+    } else {
+      console.error("Please select a library!");
+    }
   }
+}
+
+  

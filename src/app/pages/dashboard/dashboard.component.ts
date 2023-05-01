@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CarouselComponent } from '../dashboard/components/carousel/carousel.component'
+import { MatIconModule } from '@angular/material/icon';
+
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, CarouselComponent],
+  imports: [CommonModule, MatIconModule, RouterLink],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })

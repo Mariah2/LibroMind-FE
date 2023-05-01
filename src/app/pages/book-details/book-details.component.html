@@ -19,7 +19,7 @@
                     <span class="mr-2 font-sans font-semibold">I want to read</span>
                     <mat-icon>bookmarks</mat-icon>
                 </button>
-                <button mat-button [routerLink]="['/borrow', book.id]"
+                <button mat-raised-button (click)="openDialog('0ms', '0ms', book)" mat-button
                     class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
                     <span class="mr-2 font-sans font-semibold">Borrow</span>
                     <mat-icon>menu_book</mat-icon>
@@ -29,7 +29,7 @@
         <div class="pt-4">
             <mat-form-field color="accent" appearance="fill" *ngIf="book$ | async as book">
                 <mat-label>Library</mat-label>
-                <mat-select>
+                <mat-select [(value)]="library">
                     <mat-option></mat-option>
                     <mat-option [value]="libraryBook.library" *ngFor="let libraryBook of book.bookLibraries">
                         {{libraryBook.library.name}}
@@ -52,7 +52,7 @@
     </div>
     <div class="flex flex-col bg-secondary w-full">
         <div class="text-2xl text-primary-lighter ml-16 mt-2">Reviews</div>
-        <app-add-review class="bg-white w-96 ml-16 m-4 p-2" *ngIf="user$ | async as user" [user]="user"></app-add-review>
+        <app-add-review *ngIf="user$ | async as user" [user]="user"></app-add-review>
         <div *ngFor="let review of book.reviews">
             <app-review [review]="review"></app-review>
         </div>

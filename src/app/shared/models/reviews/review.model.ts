@@ -9,5 +9,5 @@ export default interface ReviewModel {
     text: string;
     addedDate: Date;
     user: UserModel;
-    book:BookModel;
+    book: BookModel;
 }

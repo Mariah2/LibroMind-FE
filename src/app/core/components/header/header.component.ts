@@ -1,15 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
 import { MatToolbarModule } from "@angular/material/toolbar";
 
 import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { Observable } from 'rxjs';
-import UserModel from 'src/app/shared/models/users/user.model';
-import { UsersService } from '../../services/users/users.service';
 import { BooksToReadService } from '../../services/books-to-read/books-to-read.service';
 
 @Component({
@@ -20,13 +17,11 @@ import { BooksToReadService } from '../../services/books-to-read/books-to-read.s
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  isLoggedIn = false;
-  userId: number | undefined;
-  user$: Observable<UserModel> | undefined;
+  private readonly authenticationService = inject(AuthenticationService);
+  private readonly booksToReadService = inject(BooksToReadService);
 
-  constructor(
-    private readonly authenticationService: AuthenticationService,
-    private readonly booksToReadService: BooksToReadService) { }
+  isLoggedIn = false;
+  userInfo$ = this.authenticationService.getUserInfo();
 
   ngOnInit(): void {
     this.authenticationService.getIsLoggedIn().subscribe({

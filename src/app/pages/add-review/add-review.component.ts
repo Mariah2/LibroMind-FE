@@ -11,11 +11,12 @@ import AddReviewModel from 'src/app/shared/models/reviews/add-review.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { BooksService } from 'src/app/core/services/books/books.service';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-add-review',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatFormFieldModule, ReactiveFormsModule],
+  imports: [CommonModule, MatCardModule, MatIconModule, MatFormFieldModule, ReactiveFormsModule],
   templateUrl: './add-review.component.html',
   styleUrls: ['./add-review.component.scss']
 })
@@ -51,15 +52,19 @@ export class AddReviewComponent {
   }
 
   async onSubmit(): Promise<void> {
-    const {rating, text} = this.reviewForm.value;
+    const { rating, text } = this.reviewForm.value;
+    const userId = this.authenticationService.getUserInfoData().id;
 
-    this.reviewsService.addReview({
-      rating,
-      text,
-      addedDate: new Date(),
-      bookId: Number(this.activatedRoute.snapshot.paramMap.get('id')),
-      userId: this.authenticationService.getUserId()} as AddReviewModel)
+    if (userId) {
+      this.reviewsService.addReview({
+        rating,
+        text,
+        addedDate: new Date(),
+        bookId: Number(this.activatedRoute.snapshot.paramMap.get('id')),
+        userId: userId,
+      } as AddReviewModel)
 
-    window.location.reload();  
+      window.location.reload();
+    }
   }
 }

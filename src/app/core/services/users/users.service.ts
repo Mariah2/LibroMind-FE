@@ -14,7 +14,7 @@ export class UsersService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getUserById(id: number): Observable<UserModel> {
+  getUserProfileById(id: number): Observable<UserModel> {
     return this.http.get<UserModel>(`${this.apiUrl}/user/profile/${id}`)
   }
 }
