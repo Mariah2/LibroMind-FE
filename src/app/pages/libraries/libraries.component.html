@@ -1,18 +1,24 @@
-<div class="flex">
-    <div *ngFor="let library of libraries$ | async">
-        <mat-card class="w-96 m-5 justify-items-center">
-            <div class="grid grid-rows-2 justify-items-center">
-                <a [routerLink]="['/library', library.id, 'books']" class="text-xl font-sans font-bold mx-5">{{library.name}}</a>
-                <a href={{library.address.map}} class="text-secondary text-lg font-sans w-80 overflow-hidden whitespace-nowrap 
-                text-ellipsis">{{library.address.street}}, {{library.address.number}},
-                    {{library.address.city}}, {{library.address.county}}, {{library.address.country}}
-                </a>
-                <button mat-button class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt
-                 text-white m-2 items-center rounded-3xl">
-                    <span class="mr-2 font-sans font-semibold">My library</span>
-                    <mat-icon>star</mat-icon>
-                </button>
-            </div>
-        </mat-card>
+<div class="grid xl:grid-cols-3 md-lg:grid-cols-2 grid-cols-1 gap-4 sm:px-8 px-2 py-2 justify-items-center
+     max-h-fullscreen overflow-y-auto app-scrollbar">
+  <mat-card *ngFor="let library of libraries$ | async" class="md-lg:w-96 w-full max-w-sm gap-4 p-4 md-lg:m-5
+  justify-items-center">
+    <div class="flex flex-col items-center">
+      <h1 class="italic">Library</h1>
+      <a [routerLink]="['/library', library.id, 'books']" [matTooltip]="'Check out the books at ' + library.name"
+         matTooltipPosition="above" class="w-full text-center text-xl font-sans font-bold overflow-hidden
+         whitespace-nowrap text-ellipsis">
+        {{library.name}}
+      </a>
     </div>
+
+    <div class="flex flex-col items-center">
+      <h1 class="italic">Location</h1>
+
+      <a href="{{library.address.map}}" [matTooltip]="'Go to Maps location:&#10;' + createLibraryAddress(library)"
+         class="w-full text-secondary text-center text-lg font-sans overflow-hidden whitespace-nowrap text-ellipsis"
+         matTooltipClass="multiline-tooltip">
+        {{createLibraryAddress(library)}}
+      </a>
+    </div>
+  </mat-card>
 </div>

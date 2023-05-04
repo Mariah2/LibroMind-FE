@@ -1,28 +1,62 @@
-<div class="overflow-y-auto h-full">
-    <mat-card *ngFor="let borrowing of borrowings$ | async" class="flex flex-row w-3/4">
-        <img [src]="borrowing.book.coverUrl" class="h-32">
+<div class="grid lg:grid-cols-2 grid-cols-1 px-8 py-2 gap-4 justify-items-center overflow-y-auto max-h-full max-w-fit
+  mx-auto">
+  <mat-form-field appearance="outline" color="accent" class="lg:col-span-2 mt-4">
+    <mat-label>Search user</mat-label>
+    <input matInput [formControl]="userSearch">
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
 
-        <div class="flex flex-col justify-between">
-            <div>
-                <h1>{{borrowing.book.title}}</h1>
-                <span>de {{borrowing.book.author.firstName}} {{borrowing.book.author.lastName}}</span>
-            </div>
+  <mat-card *ngFor="let borrowing of borrowings$ | async" class="flex flex-row max-sm:justify-center max-sm:flex-wrap
+  max-sm:gap-2 h-fit w-full max-w-2xl">
+    <img [src]="borrowing.book.coverUrl" class="h-32 p-2 self-center">
 
-            <div class="flex flex-col">
-                <span>Utilizator: {{borrowing.user.email}}</span>
-                <span>Data limita a returnarii: {{borrowing.returnDate | date}}</span>
-            </div>
-        </div>
+    <div class="flex flex-col justify-between w-6/12">
+      <div>
+        <h1>{{borrowing.book.title}}</h1>
+        <span>by {{borrowing.book.author.firstName}} {{borrowing.book.author.lastName}}</span>
+      </div>
 
-        <button type="button" mat-button *ngIf="borrowing.hasReturnedBook === null"
-            (click)="acceptBorrowing(borrowing.id)">Accept</button>
-        <button type="button" mat-button *ngIf="borrowing.wasExtensionRequested === true"
-            (click)="extendBorrowing(borrowing.id)">Extend</button>
-        <button type="button" mat-button *ngIf="borrowing.hasReturnedBook === false"
-            (click)="returnBorrowing(borrowing.id)">Return</button>
+      <div class="flex flex-col">
+        <span class="whitespace-nowrap" [matTooltip]="borrowing.user.email + ' ' + borrowing.user.phone">
+          User: {{borrowing.user.firstName}} {{borrowing.user.lastName}}
+        </span>
 
-        <button mat-icon-button *ngIf="borrowing.hasReturnedBook === null" (click)="rejectBorrowing(borrowing.id)">
-            <mat-icon>close</mat-icon>
+        <p>
+          <span *ngIf="borrowing.hasReturnedBook !== true">Return date deadline: </span>
+
+          <span *ngIf="borrowing.hasReturnedBook === true">Date of return: </span>
+
+          <span class="whitespace-nowrap">{{borrowing.returnDate | date:'dd/MM/YY'}}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-between max-sm:items-center max-sm:gap-2 sm:w-5/12 w-full mb-1.5">
+      <div class="flex justify-end">
+        <button class="h-12" mat-icon-button *ngIf="borrowing.hasReturnedBook === null; else emptyClose"
+                (click)="rejectBorrowing(borrowing.id)">
+          <mat-icon>close</mat-icon>
         </button>
-    </mat-card>
+      </div>
+
+      <button type="button" mat-button *ngIf="borrowing.hasReturnedBook === null"
+              (click)="acceptBorrowing(borrowing.id)"
+              class="w-40 h-10 mx-5 bg-secondary hover:bg-secondary-alt text-white">Accept
+      </button>
+
+      <button type="button" mat-button *ngIf="borrowing.wasExtensionRequested === true"
+              (click)="extendBorrowing(borrowing.id)"
+              class="w-40 h-10 mx-5 bg-secondary hover:bg-secondary-alt text-white">Extend
+      </button>
+
+      <button type="button" mat-button *ngIf="borrowing.hasReturnedBook === false"
+              (click)="returnBorrowing(borrowing.id)"
+              class="w-40 h-10 mx-5 bg-secondary hover:bg-secondary-alt text-white">Return
+      </button>
+    </div>
+  </mat-card>
 </div>
+
+<ng-template #emptyClose>
+  <button class="content-none"></button>
+</ng-template>

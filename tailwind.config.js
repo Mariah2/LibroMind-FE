@@ -10,7 +10,8 @@ module.exports = {
         "secondary-alt": "#73767b",
       },
       borderColor: {
-        "primary-darker": "#c9ae9f"
+        "primary-darker": "#c9ae9f",
+        "secondary": "#4d5056",
       },
       textColor:{
         "primary": "#f2e1d8",
@@ -26,7 +27,13 @@ module.exports = {
         "fullscreen": "calc(100vh - 160px)"
       },
       maxHeight: {
-        "fullscreen": "calc(100vh - 160px)"
+        "192": "768px",
+        "fullscreen": "calc(100vh - 160px)",
+        "md": "416px",
+        "lg": "592px",
+      },
+      screens: {
+        "md-lg": "832px"
       }
     },
   },

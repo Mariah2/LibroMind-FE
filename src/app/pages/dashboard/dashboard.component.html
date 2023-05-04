@@ -1,17 +1,20 @@
-<div class="grid grid-cols-2 items-center h-full">
-    <div class="flex justify-center text-secondary-darker">
-        <mat-icon fontSet="material-icons-outlined"
-            class="text-icon-large h-full w-fit flex mr-1">local_library</mat-icon>
-        <span class="text-9xl font-mono font-bold">Libro<br>Mind</span>
-    </div>
+<div class="grid md:grid-cols-2 grid-cols-1 overflow-y-auto items-center h-full">
+  <div class="md:flex hidden justify-center text-secondary-darker">
+    <mat-icon fontSet="material-icons-outlined"
+              class="xl:flex hidden h-full w-fit mr-1 text-icon-large">local_library
+    </mat-icon>
+    <span class="text-9xl font-mono font-bold">Libro<br>Mind</span>
+  </div>
 
-    <div class="grid text-2xl justify-center h-3/4 border-l-2 border-l-gray-300 items-center p-5 
-            text-zinc-700 font-serif font-bold italic text-justify">
-        <p>
-            A travel agency for the mind because as Dr. Seuss said "The more that you read, the more things you will know. The more that you learn, the more places you'll go."
-        </p>
-        <p>
-            Start searching the right book to start a new adventure <a [routerLink]="['/books']" routerLinkActive="active">here.</a>
-        </p>
-    </div>
+  <p class="grid justify-center items-center overflow-y-auto h-full md:border-l-2 border-l-gray-300 p-5
+            text-zinc-700 font-mono font-bold tab text-2xl italic text-justify">
+    <span>
+      A travel agency for the mind because as Dr. Seuss said "The more that you read, the more things you will know. The
+      more that you learn, the more places you'll go."
+    </span>
+
+    <span>Start searching the right book to start a new adventure
+      <a class="hover:underline text-primary link-shadow" [routerLink]="['/books']">here.</a>
+    </span>
+  </p>
 </div>

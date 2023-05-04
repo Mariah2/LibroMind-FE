@@ -1,39 +1,85 @@
-<div class="bg-secondary h-full px-96 py-12">
+<div class="bg-secondary flex h-full px-4 py-12">
+  <div class="flex flex-col items-center justify-items-center h-full w-full max-h-md max-w-2xl m-auto bg-white rounded-md
+  overflow-y-auto mat-elevation-z20">
     <form [formGroup]="updateProfileForm" (submit)="updateUser()" *ngIf="user$ | async as user"
-        class="profile-form grid grid-cols-2 h-full justify-items-center bg-white rounded-md mat-elevation-z20">
-        <h1 class="col-span-2 mt-6 mb-1 text-2xl font-bold">Hello, {{user.email}}!</h1>
+          class="flex flex-col items-center justify-items-center profile-form">
+      <h1 class="mt-6 mb-1 text-2xl font-bold">Hello, {{user.firstName}} {{user.lastName}}!</h1>
+
+      <div class="grid md:grid-cols-2 grid-cols-1 gap-8 px-4 my-4">
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>First Name</mat-label>
-            <input matInput formControlName="firstName" placeholder="First Name">
+          <mat-label>First Name</mat-label>
+
+          <input matInput formControlName="firstName" placeholder="First Name">
+
+          <mat-error *ngIf="updateProfileForm.controls.firstName.invalid && updateProfileForm.controls.firstName.errors">
+            <span *ngIf="updateProfileForm.controls.firstName.errors['required']">Field required!</span>
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>Last Name</mat-label>
-            <input matInput formControlName="lastName" placeholder="Last Name">
+          <mat-label>Last Name</mat-label>
+
+          <input matInput formControlName="lastName" placeholder="Last Name">
+
+          <mat-error *ngIf="updateProfileForm.controls.lastName.invalid && updateProfileForm.controls.lastName.errors">
+            <span *ngIf="updateProfileForm.controls.lastName.errors['required']">Field required!</span>
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput disabled placeholder="Email" [value]="user.email">
+          <mat-label>Email</mat-label>
+
+          <input matInput disabled placeholder="Email" [value]="user.email">
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="phone" placeholder="Phone Number">
+          <mat-label>Phone Number</mat-label>
+
+          <input pattern="^\d+$" matInput formControlName="phone" placeholder="Phone Number">
+
+          <mat-error *ngIf="updateProfileForm.controls.phone.invalid && updateProfileForm.controls.phone.errors">
+            <span *ngIf="updateProfileForm.controls.phone.errors['required']">Field required!</span>
+
+            <span *ngIf="updateProfileForm.controls.phone.errors['pattern']">Use only digits from 0 to 9</span>
+
+            <span *ngIf="updateProfileForm.controls.phone.errors['minlength']">
+              Minimum length is {{updateProfileForm.controls.phone.errors['minlength'].requiredLength}}
+            </span>
+
+            <span *ngIf="updateProfileForm.controls.phone.errors['maxlength']">
+              Maximum length is {{updateProfileForm.controls.phone.errors['maxlength'].requiredLength}}
+            </span>
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>Birth Date</mat-label>
-            <input matInput formControlName="birthDate" [matDatepicker]="picker"
-                [value]="user.birthDate">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
+          <mat-label>Birth Date</mat-label>
+
+          <input matInput formControlName="birthDate" [matDatepicker]="picker">
+
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+
+          <mat-datepicker #picker></mat-datepicker>
+
+          <mat-error *ngIf="updateProfileForm.controls.birthDate.invalid && updateProfileForm.controls.birthDate.errors">
+            <span *ngIf="updateProfileForm.controls.birthDate.errors['required']">Field required!</span>
+
+            <span *ngIf="updateProfileForm.controls.birthDate.errors['invalidAge']">
+              {{updateProfileForm.controls.birthDate.errors['invalidAge']}}
+            </span>
+          </mat-error>
         </mat-form-field>
-        <div class="col-span-2 flex items-center">
-            <button type="button" mat-button class="w-40 h-10 mx-5 bg-secondary hover:bg-secondary-alt text-white"
-                (click)="edit()">Edit</button>
-            <button type="submit" mat-button
-                class="w-40 h-10 mx-5 bg-secondary hover:bg-secondary-alt text-white">Save</button>
-        </div>
+      </div>
+
+      <div class="md:col-span-2 flex md:flex-row flex-col md:gap-0 gap-4 items-center">
+        <button type="button" mat-button class="w-40 h-10 mx-5 bg-secondary hover:bg-secondary-alt text-white"
+                (click)="edit()">Edit
+        </button>
+
+        <button type="submit" mat-button
+                class="w-40 h-10 mx-5 bg-secondary hover:bg-secondary-alt text-white">Save
+        </button>
+      </div>
     </form>
+  </div>
 </div>

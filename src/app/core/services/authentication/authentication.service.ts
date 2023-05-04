@@ -40,13 +40,13 @@ export class AuthenticationService {
     });
   }
 
-  register(request: RegisterRequestModel): void {
+  async register(request: RegisterRequestModel): Promise<void> {
     this.http.post(`${this.authApi}/register`, request, this.httpOptions).subscribe({
       next: () => {
         this.router.navigate(['/login']);
       },
       error: (response: HttpErrorResponse) => {
-
+        console.error(response.status);
       }
     });
   }

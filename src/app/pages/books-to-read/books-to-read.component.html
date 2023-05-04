@@ -1,3 +1,5 @@
-<div class="flex">
-    <app-book-card *ngFor="let bookCard of bookCards$ | async" [book]="bookCard" [isMarkedToRead]="true"></app-book-card>
+<div class="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 sm:px-8 py-2 justify-items-center
+  max-h-fullscreen overflow-auto app-scrollbar">
+  <app-book-card *ngFor="let bookUserCard of bookUserCards$ | async" [book]="bookUserCard.book"
+                 [isMarkedToRead]="true"></app-book-card>
 </div>

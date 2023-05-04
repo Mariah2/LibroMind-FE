@@ -1,3 +1,12 @@
-<div class="grid grid-cols-4 justify-items-center max-h-fullscreen overflow-auto terms-conditions">
-    <app-book-card *ngFor="let libraryBook of libraryBooks$ | async" [book]="libraryBook"></app-book-card>
+<div class="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 sm:px-8 py-2 justify-items-center
+     max-h-fullscreen overflow-auto app-scrollbar">
+  <mat-card *ngIf="userRole === 'librarian'" class="max-w-xs max-sm:py-4 w-72 drop-shadow-xl justify-center items-center">
+    <button (click)="openDialog('0ms', '0ms')"
+            class="flex text-9xl text-white justify-center items-center bg-gray-300 w-24 h-24 rounded-full">
+      +
+    </button>
+  </mat-card>
+
+  <app-book-card *ngFor="let bookLibraryCard of bookLibraryCards$ | async" [book]="bookLibraryCard.book"
+                 [bookLibrary]="bookLibraryCard"></app-book-card>
 </div>

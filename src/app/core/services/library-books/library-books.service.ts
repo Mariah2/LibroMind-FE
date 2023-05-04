@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 
-import BookModel from 'src/app/shared/models/books/book.model';
 import AddBookLibraryModel from 'src/app/shared/models/library-books/add-book-library.model';
+import BookLibraryCardModel from "../../../shared/models/book-library/book-library-card.model";
 import BookLibraryModel from 'src/app/shared/models/book-library/book-library.model';
 
 @Injectable({
@@ -23,8 +23,8 @@ export class LibraryBooksService {
     return this.http.post(`${this.apiUrl}/booklibrary`, bookLibrary, { headers: this.headers });
   }
 
-  getLibraryBooks(libraryId: number): Observable<BookModel[]> {
-    return this.http.get<BookModel[]>(`${this.apiUrl}/library/${libraryId}/books`, { headers: this.headers });
+  getBookLibraryCards(libraryId: number): Observable<BookLibraryCardModel[]> {
+    return this.http.get<BookLibraryCardModel[]>(`${this.apiUrl}/booklibrary/libraries/${libraryId}/books`, { headers: this.headers });
   }
 
   getBookLibrary(bookId: number, libraryId: number): Observable<BookLibraryModel> {

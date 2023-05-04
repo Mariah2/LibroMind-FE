@@ -1,63 +1,71 @@
-<mat-toolbar class="relative px-8 mb-4 flex bg-primary text-secondary">
-    <button class="h-full rounded-none flex flex-1 items-center text-secondary-darker" mat-icon-button>
-        <mat-icon>menu</mat-icon>
+<mat-toolbar class="relative h-16 px-8 mb-4 flex bg-primary text-secondary">
+  <button mat-icon-button (click)="toggleSidenav()"
+          class="h-full rounded-none flex flex-1 items-center text-secondary-darker lg:invisible">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <a [routerLink]="['/']" class="h-full flex flex-1 hover:cursor-pointer justify-center text-secondary-darker">
+    <mat-icon fontSet="material-icons-outlined"
+              class="text-4xl h-full w-fit flex items-center mr-1">local_library
+    </mat-icon>
+    <span class="leading-5 mt-3 text-2xl font-mono font-bold">Libro<br>Mind</span>
+  </a>
+
+  <div *ngIf="userInfo$ | async as userInfo" class="h-full flex flex-1 gap-5 justify-end">
+    <a *ngIf="!userInfo.role || userInfo.role === 'user'" mat-button [routerLink]="['/books']" routerLinkActive="active"
+       class="lg:flex hidden h-full items-center rounded-none font-mono font-semibold
+       text-secondary-darker">Books</a>
+
+    <ng-container *ngIf="userInfo && userInfo.role === 'librarian'">
+      <a *ngIf="userProfile$ | async as userProfile" mat-button
+         [routerLink]="['/library', userProfile.libraryId, 'books']" routerLinkActive="active"
+         class="lg:flex hidden h-full items-center rounded-none font-mono font-semibold text-secondary-darker">Books</a>
+    </ng-container>
+
+    <a *ngIf="!isLoggedIn || userInfo.role === 'user'" mat-button [routerLink]="['/libraries']"
+       routerLinkActive="active"
+       class="lg:flex hidden h-full items-center rounded-none font-mono font-semibold
+       text-secondary-darker">Libraries</a>
+
+    <a *ngIf="userInfo.role === 'librarian'" mat-button [routerLink]="['/librarian/borrowings']"
+       routerLinkActive="active"
+       class="lg:flex hidden h-full items-center rounded-none font-mono font-semibold
+       text-secondary-darker">Borrowings</a>
+
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon class="h-full flex items-center text-secondary-darker">account_circle</mat-icon>
     </button>
 
-    <a [routerLink]="['/']" class="h-full flex flex-1 hover:cursor-pointer justify-center text-secondary-darker">
-        <mat-icon fontSet="material-icons-outlined"
-            class="text-4xl h-full w-fit flex items-center mr-1">local_library</mat-icon>
-        <span class="leading-5 mt-3 text-2xl font-mono font-bold">Libro<br>Mind</span>
-    </a>
+    <mat-menu #menu="matMenu" class="text-secondary-darker">
+      <button *ngIf="!isLoggedIn" mat-menu-item [routerLink]="['/register']">
+        <mat-icon class="text-secondary-darker">person_add</mat-icon>
+        <span class="text-secondary-darker">Register</span>
+      </button>
 
-    <div *ngIf="userInfo$ | async as userInfo" class="h-full flex flex-1 gap-5 justify-end">
-        <a mat-button class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
-            [routerLink]="['/books']" routerLinkActive="active">Books
-        </a>
+      <button *ngIf="!isLoggedIn" mat-menu-item [routerLink]="['/login']">
+        <mat-icon class="text-secondary-darker">login</mat-icon>
+        <span class="text-secondary-darker">Login</span>
+      </button>
 
-        <a *ngIf="!isLoggedIn || userInfo.role === 'user'" mat-button
-            class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
-            [routerLink]="['/libraries']" routerLinkActive="active">Libraries
-        </a>
+      <button *ngIf="isLoggedIn" mat-menu-item [routerLink]="['/profile']">
+        <mat-icon class="text-secondary-darker">person</mat-icon>
+        <span class="text-secondary-darker">Profile</span>
+      </button>
 
-        <a *ngIf="userInfo.role === 'librarian'" mat-button
-            class="flex h-full items-center rounded-none font-mono font-semibold text-secondary-darker"
-            [routerLink]="['/librarian/borrowings']" routerLinkActive="active">Borrowings
-        </a>
+      <button *ngIf="isLoggedIn && userInfo.role === 'user'" mat-menu-item [routerLink]="['/user/books']">
+        <mat-icon class="text-secondary-darker">bookmarks</mat-icon>
+        <span class="text-secondary-darker">Books to read</span>
+      </button>
 
-        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-            <mat-icon class="h-full flex items-center text-secondary-darker">account_circle</mat-icon>
-        </button>
+      <button *ngIf="isLoggedIn && userInfo.role === 'user'" mat-menu-item [routerLink]="['/user/borrowings']">
+        <mat-icon class="text-secondary-darker">receipt_long</mat-icon>
+        <span class="text-secondary-darker">My borrowings</span>
+      </button>
 
-        <mat-menu #menu="matMenu" class="text-secondary-darker">
-            <button *ngIf="!isLoggedIn" mat-menu-item [routerLink]="['/register']">
-                <mat-icon class="text-secondary-darker">person_add</mat-icon>
-                <span class="text-secondary-darker">Register</span>
-            </button>
-
-            <button *ngIf="!isLoggedIn" mat-menu-item [routerLink]="['/login']">
-                <mat-icon class="text-secondary-darker">login</mat-icon>
-                <span class="text-secondary-darker">Login</span>
-            </button>
-
-            <button *ngIf="isLoggedIn" mat-menu-item [routerLink]="['/profile']">
-                <mat-icon class="text-secondary-darker">person</mat-icon>
-                <span class="text-secondary-darker">Profile</span>
-            </button>
-
-            <button *ngIf="isLoggedIn" mat-menu-item [routerLink]="['/user/books']">
-                <mat-icon class="text-secondary-darker">bookmarks</mat-icon>
-                <span class="text-secondary-darker">Books to read</span>
-            </button>
-
-            <button *ngIf="isLoggedIn && userInfo.role === 'user'" mat-menu-item [routerLink]="['/user/borrowings']">
-                <mat-icon class="text-secondary-darker">bookmarks</mat-icon>
-                <span class="text-secondary-darker">My borrowings</span>
-            </button>
-
-            <button *ngIf="isLoggedIn" mat-menu-item [routerLink]="['/dashboard']" (click)="logout()">
-                <mat-icon class="text-secondary-darker">logout</mat-icon>
-                <span class="text-secondary-darker">Logout</span>
-            </button>
-        </mat-menu>
-    </div>
+      <button *ngIf="isLoggedIn" mat-menu-item [routerLink]="['/dashboard']" (click)="logout()">
+        <mat-icon class="text-secondary-darker">logout</mat-icon>
+        <span class="text-secondary-darker">Logout</span>
+      </button>
+    </mat-menu>
+  </div>
 </mat-toolbar>

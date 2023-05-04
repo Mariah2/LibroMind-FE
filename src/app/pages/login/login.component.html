@@ -1,35 +1,34 @@
-<div class="bg-secondary h-full px-96 py-12">
-    <div class="flex flex-col items-center h-full justify-items-center bg-white rounded-md
-                mat-elevation-z20">
-        <form [formGroup]="loginForm" (submit)="onSubmit()"
-            class="flex flex-col items-center h-full justify-items-center">
-            <h1 class="mt-6 mb-1 text-2xl font-bold my-5">Login</h1>
+<div class="bg-secondary flex h-full px-4 py-12">
+  <div class="flex flex-col items-center justify-items-center h-full w-full max-h-md max-w-2xl m-auto bg-white rounded-md
+                overflow-y-auto mat-elevation-z20">
+    <form [formGroup]="loginForm" (submit)="onSubmit()" class="flex flex-col items-center justify-items-center">
+      <h1 class="mt-6 mb-1 text-2xl font-bold my-5">Login</h1>
 
-            <mat-form-field class="h-16 w-64 my-5" color="accent" appearance="outline">
-                <mat-label>Email</mat-label>
-                <input matInput formControlName="email" placeholder="Email">
-            </mat-form-field>
+      <mat-form-field class="h-16 w-64 my-5" color="accent" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Email">
+      </mat-form-field>
 
-            <mat-form-field class="h-16 w-64 my-5" color="accent" appearance="outline">
-                <mat-label>Password</mat-label>
-                <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
-                <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                    [attr.aria-pressed]="hide" type="button">
-                    <mat-icon class="mr-3 text-[#757575]">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                </button>
-            </mat-form-field>
+      <mat-form-field class="h-16 w-64 my-5" color="accent" appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide" type="button">
+          <mat-icon class="mr-3 text-[#757575]">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
 
-            <button mat-button class="w-40 h-10 bg-secondary hover:bg-secondary-alt text-white my-5">
-                Login
-            </button>
-        </form>
+      <button mat-button [disabled]="loginForm.invalid"
+              class="w-40 h-10 bg-secondary hover:bg-secondary-alt text-white my-5">
+        Login
+      </button>
+    </form>
 
-        <span class="font-mono font-medium text-secondary my-4">
-            You don't have an account?
+    <span class="font-mono font-medium text-secondary my-4">
+            Don't have an account?
             <a mat-button [routerLink]="['/register']">
                 <span class="font-bold font-mono">Register</span>
             </a>
         </span>
-
-    </div>
+  </div>
 </div>

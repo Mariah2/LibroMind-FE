@@ -1,4 +1,4 @@
-<mat-card *ngIf="review" class="flex flex-row bg-white gap-8 mx-16 my-4 p-2">
+<mat-card *ngIf="review" class="flex sm:flex-row bg-white gap-8 sm:mx-16 mx-4 my-4 p-2">
     <div *ngIf="review.user" class="flex flex-col text-secondary">
         <mat-icon class="mr-2">account_circle</mat-icon>
         {{review.user.firstName + " " + review.user.lastName}}
@@ -7,8 +7,10 @@
     <div>
         <div class="flex">
             <span class="mr-2">{{review.rating}} out of 10</span>
+
             <mat-icon class="text-secondary">star</mat-icon>
         </div>
+
         <span class="text-secondary">Comment: </span>"{{review.text}}"
     </div>
 </mat-card>

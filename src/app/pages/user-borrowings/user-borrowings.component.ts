@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { BehaviorSubject, map } from 'rxjs';
 import BorrowingDetailsModel from 'src/app/shared/models/borrowings/borrowing-details.model';
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
   selector: 'app-user-borrowings',
@@ -48,8 +49,8 @@ export class UserBorrowingsComponent implements OnInit {
           console.log("Borrowing has been canceled!");
         }
       },
-      error: () => {
-        console.error("An error occurred and the borrow could not be canceled!");
+      error: (err: HttpErrorResponse) => {
+        console.error(err.error.title);
       }
     });
   }
@@ -67,8 +68,8 @@ export class UserBorrowingsComponent implements OnInit {
           console.log("An extension request has been submitted for your borrowing!");
         }
       },
-      error: () => {
-        console.error("An error occurred and the borrowing extension has not been submitted!");
+      error: (err: HttpErrorResponse) => {
+        console.error(err.error.title);
       }
     });
   }

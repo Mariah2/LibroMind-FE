@@ -1,12 +1,18 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BorrowingsService } from 'src/app/core/services/borrowings/borrowings.service';
-import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
+import { BehaviorSubject } from 'rxjs';
+
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { BehaviorSubject, Observable, catchError, filter, map, of, switchMap, tap } from 'rxjs';
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
+import { FormControl, ReactiveFormsModule } from "@angular/forms";
+
 import { UsersService } from 'src/app/core/services/users/users.service';
+import { BorrowingsService } from 'src/app/core/services/borrowings/borrowings.service';
+import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
 import BorrowingDetailsModel from 'src/app/shared/models/borrowings/borrowing-details.model';
 
 @Component({
@@ -16,7 +22,11 @@ import BorrowingDetailsModel from 'src/app/shared/models/borrowings/borrowing-de
     CommonModule,
     MatButtonModule,
     MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatIconModule,
+    MatTooltipModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './librarian-borrowings.component.html',
   styleUrls: ['./librarian-borrowings.component.scss']
@@ -26,19 +36,36 @@ export class LibrarianBorrowingsComponent implements OnInit {
   private readonly borrowingsService = inject(BorrowingsService);
   private readonly usersService = inject(UsersService);
 
+  private userId = this.authenticationService.getUserInfoData().id;
+  private libraryId = 0;
+
   private readonly borrowingsSubject = new BehaviorSubject<BorrowingDetailsModel[]>([]);
   borrowings$ = this.borrowingsSubject.asObservable();
 
+  userSearch = new FormControl('');
+
   ngOnInit(): void {
-    this.usersService.getUserProfileById(this.authenticationService.getUserInfoData().id).subscribe({
+    this.usersService.getUserProfileById(this.userId).subscribe({
       next: (userProfile) => {
-        this.borrowingsService.getBorrowingsByLibraryId(Number(userProfile.libraryId)).subscribe({
+        this.libraryId = Number(userProfile.libraryId);
+
+        this.borrowingsService.getBorrowingsByLibraryId(this.libraryId).subscribe({
           next: (borrowings) => {
             this.borrowingsSubject.next(borrowings);
           }
         })
       }
     });
+
+    this.userSearch.valueChanges.subscribe({
+      next: (param: string | null): void => {
+        this.borrowingsService.getBorrowingsByLibraryIdAndParam(this.libraryId, param).subscribe({
+          next: (borrowings) => {
+            this.borrowingsSubject.next(borrowings);
+          }
+        });
+      }
+    })
   }
 
   acceptBorrowing(id: number): void {

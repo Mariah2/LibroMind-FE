@@ -26,19 +26,19 @@ body {
   border-right: 0px !important;
 }
 
-.terms-conditions::-webkit-scrollbar {
+.app-scrollbar::-webkit-scrollbar {
   width: 4px;
 }
 
-.terms-conditions::-webkit-scrollbar-thumb {
+.app-scrollbar::-webkit-scrollbar-thumb {
   border-radius: 12px;
 }
 
-.terms-conditions::-webkit-scrollbar-track {
+.app-scrollbar::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
-:hover.terms-conditions::-webkit-scrollbar-thumb {
+:hover.app-scrollbar::-webkit-scrollbar-thumb {
   background-color: #4d5056;
 }
 

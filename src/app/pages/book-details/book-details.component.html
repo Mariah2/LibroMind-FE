@@ -1,60 +1,105 @@
-<div *ngIf="book$ | async as book" class="flex flex-col max-h-fullscreen overflow-auto terms-conditions">
-    <div class="grid grid-cols-3 justify-items-center py-8">
-        <img src={{book.coverUrl}} alt="Cover photo" class="h-96 object-contain my-5 drop-shadow-lg">
-        <div>
-            <div class="text-4xl mt-4">{{book.title}}</div>
-            <div *ngIf="book.author" class="text-xl text-secondary-darker">{{book.author.firstName}}
-                {{book.author.lastName}}</div>
-            <div class="flex items-center my-5">
-                <span class="mr-2 font-sans font-semibold text-secondary">{{book.rating === 0 ? 'No reviews' :
-                    book.rating +
-                    '/10'}}</span>
-                <mat-icon class="text-secondary">star</mat-icon>
-                <span class="mr-2 font-sans font-semibold text-secondary">(15 recenzii)</span>
-            </div>
-            <div class="text-justify text-sm">{{book.description}}</div>
-            <div class="grid grid-cols-2 justify-items-center my-5">
-                <button mat-button
-                    class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
-                    <span class="mr-2 font-sans font-semibold">I want to read</span>
-                    <mat-icon>bookmarks</mat-icon>
-                </button>
-                <button mat-raised-button (click)="openDialog('0ms', '0ms', book)" mat-button
-                    class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
-                    <span class="mr-2 font-sans font-semibold">Borrow</span>
-                    <mat-icon>menu_book</mat-icon>
-                </button>
-            </div>
-        </div>
-        <div class="pt-4">
-            <mat-form-field color="accent" appearance="fill" *ngIf="book$ | async as book">
-                <mat-label>Library</mat-label>
-                <mat-select [(value)]="library">
-                    <mat-option></mat-option>
-                    <mat-option [value]="libraryBook.library" *ngFor="let libraryBook of book.bookLibraries">
-                        {{libraryBook.library.name}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+<div *ngIf="book$ | async as book" class="flex flex-col max-h-fullscreen overflow-auto app-scrollbar">
+  <div class="grid xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 lg:items-center justify-items-center
+  sm:px-8 px-4 py-8">
+    <img src="{{book.coverUrl ?? 'assets/no-cover.jpg'}}" alt="Cover photo"
+         class="h-96 lg:mb-20 object-contain drop-shadow-lg">
 
-            <div class="mt-36 text-secondary -translate-y-24">
-                <div class="text-2xl font-medium pb-2">Detalii carte</div>
-                <div class="text-sm py-2 border-b-2 border-b-zinc-300" *ngFor="let bookCategory of book.bookCategories">
-                    Categorie: {{bookCategory.category.name}}</div>
-                <div class="text-sm py-2 border-b-2 border-b-zinc-300">Numar Pagini: {{book.pagesNumber}}</div>
-                <div *ngIf="book.publisher" class="text-sm py-2 border-b-2 border-b-zinc-300">Editura:
-                    {{book.publisher.name}}</div>
-                <div class="text-sm py-2 border-b-2 border-b-zinc-300">
-                    Data publicației: {{book.publishingDate | date}}
-                </div>
-            </div>
+    <div class="xl:col-span-2 lg:row-span-1 row-span-2 max-sm:mt-8">
+      <div class="lg:max-h-96 max-h-192 overflow-y-auto sm:px-4 app-scrollbar">
+        <div class="text-4xl">{{book.title}}</div>
+
+        <div *ngIf="book.author" class="text-xl text-secondary-darker">
+          {{book.author.firstName}} {{book.author.lastName}}
         </div>
-    </div>
-    <div class="flex flex-col bg-secondary w-full">
-        <div class="text-2xl text-primary-lighter ml-16 mt-2">Reviews</div>
-        <app-add-review *ngIf="user$ | async as user" [user]="user"></app-add-review>
-        <div *ngFor="let review of book.reviews">
-            <app-review [review]="review"></app-review>
+
+        <div class="flex items-center my-5">
+        <span class="mr-2 font-sans font-semibold text-secondary">
+          {{book.rating === 0 ? 'No reviews' : book.rating + '/10'}}
+        </span>
+
+          <mat-icon class="text-secondary">star</mat-icon>
+
+          <span class="mr-2 font-sans font-semibold text-secondary">({{book.reviews ? book.reviews.length : 0}}
+            reviews)</span>
         </div>
+
+        <div class="text-justify text-sm">{{book.description}}</div>
+      </div>
+
+      <div class="flex max-sm:flex-col max-sm:items-center justify-center my-5">
+        <ng-container *ngIf="(!userInfo.role || userInfo.role === 'user')">
+          <button *ngIf="(isMarkedToRead$ | async) === false; else removeFromList" mat-button (click)="addBookToRead()"
+                  class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
+            <span class="mr-2 font-sans font-semibold">I want to read</span>
+
+            <mat-icon>bookmarks</mat-icon>
+          </button>
+        </ng-container>
+
+        <button *ngIf="!userInfo.role || userInfo.role === 'user'"
+                mat-raised-button (click)="openDialog('0ms', '0ms', book)" mat-button
+                class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
+          <span class="mr-2 font-sans font-semibold">Borrow</span>
+
+          <mat-icon>menu_book</mat-icon>
+        </button>
+      </div>
     </div>
+
+    <div class="max-sm:w-full max-sm:text-center pt-4">
+      <ng-container *ngIf="userInfo.role === 'user'">
+        <mat-form-field color="accent" appearance="outline" *ngIf="book$ | async as book">
+          <mat-label>Library</mat-label>
+
+          <mat-select [(value)]="library">
+            <mat-option></mat-option>
+
+            <mat-option [value]="libraryBook.library" *ngFor="let libraryBook of book.bookLibraries">
+              {{libraryBook.library.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+
+      <div class="mt-36 text-secondary -translate-y-24">
+        <div class="text-2xl font-medium pb-2">Book details</div>
+
+        <div class="text-sm py-2 border-b-2 border-b-zinc-300" *ngFor="let bookCategory of book.bookCategories">
+          Category: {{bookCategory.category.name}}
+        </div>
+
+        <div class="text-sm py-2 border-b-2 border-b-zinc-300">No. pages: {{book.pagesNumber}}</div>
+
+        <div *ngIf="book.publisher" class="text-sm py-2 border-b-2 border-b-zinc-300">
+          Publisher: {{book.publisher.name}}
+        </div>
+
+        <div class="text-sm py-2 border-b-2 border-b-zinc-300">
+          Publishing date: {{book.publishingDate | date}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex flex-col bg-secondary w-full">
+    <div class="text-2xl text-primary-lighter ml-16 mt-2">Reviews</div>
+
+    <ng-container *ngIf="userInfo && userInfo.role === 'user'">
+      <app-add-review *ngIf="user$ | async as user" [user]="user"></app-add-review>
+    </ng-container>
+
+    <div *ngFor="let review of book.reviews">
+      <app-review [review]="review"></app-review>
+    </div>
+  </div>
 </div>
+
+
+<ng-template #removeFromList>
+  <button type="button" mat-button (click)="removeBookFromToRead()"
+          class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
+    <span class="mr-2 font-sans font-semibold text-xs">Remove from my list</span>
+
+    <mat-icon class="material-icons-outlined">bookmarks</mat-icon>
+  </button>
+</ng-template>

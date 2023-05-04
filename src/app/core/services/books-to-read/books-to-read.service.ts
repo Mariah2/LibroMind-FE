@@ -1,36 +1,41 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { inject, Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
+
 import { AuthenticationService } from '../authentication/authentication.service';
+
 import AddUserBookModel from 'src/app/shared/models/books-to-read/add-book-to-read.model';
-import BookCardModel from 'src/app/shared/models/books/book-card.model';
+import BookUserCardModel from "../../../shared/models/book-users/book-user-card.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BooksToReadService implements OnInit {
+  private readonly authenticationService = inject(AuthenticationService);
+  private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
+
   private apiUrl = environment.apiUrl;
-  private booksToRead = new BehaviorSubject<BookCardModel[]>([]);
+  private booksToReadSubject = new BehaviorSubject<BookUserCardModel[]>([]);
   private readonly httpOptions = {
     headers: new HttpHeaders({
       "Content-Type": "application/json",
     }),
   };
-  
-  constructor(
-    private readonly authenticationService: AuthenticationService,
-    private readonly http: HttpClient,
-    private readonly router: Router) { }
 
   ngOnInit(): void {
     this.setBooksToRead();
   }
 
-  getBooksToRead(): Observable<BookCardModel[]> {
-    return this.booksToRead.asObservable();
+  getBooksToRead(): Observable<BookUserCardModel[]> {
+    if (this.booksToReadSubject.getValue().length < 1) {
+      this.setBooksToRead();
+    }
+
+    return this.booksToReadSubject.asObservable();
   }
 
   setBooksToRead(): void {
@@ -38,26 +43,26 @@ export class BooksToReadService implements OnInit {
 
     if (userId) {
       this.getBookCards(userId).subscribe({
-        next: (value: BookCardModel[]) => {
-          this.booksToRead.next(value);
+        next: (value: BookUserCardModel[]) => {
+          this.booksToReadSubject.next(value);
         }
       });
     }
   }
 
   clearBooksToRead(): void {
-    this.booksToRead.next([]);
+    this.booksToReadSubject.next([]);
   }
 
-  getBookCards(userId: number): Observable<BookCardModel[]> {
-    return this.http.get<BookCardModel[]>(`${this.apiUrl}/book/user/${userId}`);
+  getBookCards(userId: number): Observable<BookUserCardModel[]> {
+    return this.http.get<BookUserCardModel[]>(`${this.apiUrl}/bookuser/users/${userId}`);
   }
-  
+
   addUserBook(request: AddUserBookModel): void {
     if (request.userId === undefined) {
       this.router.navigate(['/login']);
 
-      console.error("You need to be logged in to mark books as 'To read'!")
+      console.error("You need to be logged in order to mark books as 'To read'!")
 
       return;
     }
@@ -65,8 +70,8 @@ export class BooksToReadService implements OnInit {
     this.http.post(`${this.apiUrl}/bookuser`, request, this.httpOptions).subscribe({
       next: () => {
         this.getBookCards(request.userId).subscribe({
-          next: (value: BookCardModel[]) => {
-            this.booksToRead.next(value);
+          next: (value: BookUserCardModel[]) => {
+            this.booksToReadSubject.next(value);
           }
         })
         console.log("Success");
@@ -78,6 +83,36 @@ export class BooksToReadService implements OnInit {
   }
 
   removeUserBook(bookId: number) {
-    this.http.delete(`${this.apiUrl}/bookuser/${bookId}`)
+    const userId = this.authenticationService.getUserInfoData().id;
+
+    if (!userId) {
+      this.router.navigate(['/login']);
+
+      console.error("You need to be logged in order to remove books from 'To read'!")
+
+      return;
+    }
+
+    const bookUserId = this.booksToReadSubject.getValue().find(btr => btr.bookId === bookId)?.id;
+
+    if (!bookUserId) {
+      console.error("Book cannot be found in 'To read' list!")
+
+      return;
+    }
+
+    this.http.delete(`${this.apiUrl}/bookuser/${bookUserId}`, this.httpOptions).subscribe({
+      next: () => {
+        this.getBookCards(userId).subscribe({
+          next: (value: BookUserCardModel[]) => {
+            this.booksToReadSubject.next(value);
+          }
+        })
+        console.log("Success");
+      },
+      error: (response: HttpErrorResponse) => {
+        console.error(response.status);
+      }
+    })
   }
 }

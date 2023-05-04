@@ -1,29 +1,30 @@
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { BehaviorSubject, catchError, Observable, take } from 'rxjs';
+import { BehaviorSubject, Observable, } from 'rxjs';
 
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSelectModule } from '@angular/material/select';
 
-import BookModel from 'src/app/shared/models/books/book.model';
-import UserModel from 'src/app/shared/models/users/user.model';
-
-import { BooksService } from 'src/app/core/services/books/books.service';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
-import { UsersService } from 'src/app/core/services/users/users.service';
-import { ReviewComponent } from '../review/review.component';
-import { AddReviewComponent } from '../add-review/add-review.component';
-import { MatDialog } from '@angular/material/dialog';
-import { BorrowDialog } from 'src/app/shared/components/borrow-dialog/borrow-dialog.component';
-import LibraryModel from 'src/app/shared/models/libraries/library.model';
-import AddBorrowingModel from 'src/app/shared/models/borrowings/add-borrowing.model';
-import LibraryBookModel from 'src/app/shared/models/library-books/library-book.model';
+import { BooksService } from 'src/app/core/services/books/books.service';
+import { BooksToReadService } from "../../core/services/books-to-read/books-to-read.service";
 import { LibraryBooksService } from 'src/app/core/services/library-books/library-books.service';
-import BorrowingConfirmationModel from 'src/app/shared/models/borrowings/borrowing-confirmation.model';
+import { UsersService } from 'src/app/core/services/users/users.service';
 
+import { AddReviewComponent } from '../../shared/components/add-review/add-review.component';
+import { BorrowDialog } from 'src/app/shared/components/borrow-dialog/borrow-dialog.component';
+import { ReviewComponent } from '../review/review.component';
+
+import BookModel from 'src/app/shared/models/books/book.model';
+import BorrowingConfirmationModel from 'src/app/shared/models/borrowings/borrowing-confirmation.model';
+import LibraryModel from 'src/app/shared/models/libraries/library.model';
+import UserModel from 'src/app/shared/models/users/user.model';
+import UserInfoModel from "../../shared/models/users/user-info.model";
+import AddUserBookModel from "../../shared/models/books-to-read/add-book-to-read.model";
 
 @Component({
   selector: 'app-book-details',
@@ -42,19 +43,26 @@ import BorrowingConfirmationModel from 'src/app/shared/models/borrowings/borrowi
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookDetailsComponent {
-  private readonly authenticationService = inject(AuthenticationService);
   private readonly activatedRoute = inject(ActivatedRoute);
-  private readonly bookService = inject(BooksService);
-  private readonly libraryBooksService = inject(LibraryBooksService);
   private readonly router = inject(Router);
-  private readonly bookSubject = new BehaviorSubject<BookModel>({} as BookModel);
+
+  private readonly authenticationService = inject(AuthenticationService);
+  private readonly bookService = inject(BooksService);
+  private readonly booksToReadService = inject(BooksToReadService);
+  private readonly libraryBooksService = inject(LibraryBooksService);
   private readonly usersService = inject(UsersService);
+
+  private readonly bookSubject = new BehaviorSubject<BookModel>({} as BookModel);
+  book$: Observable<BookModel> = this.bookSubject.asObservable();
 
   constructor(public dialog: MatDialog) { }
 
   library: LibraryModel | null = null;
+  userInfo: UserInfoModel = this.authenticationService.getUserInfoData();
+
   user$: Observable<UserModel> | undefined;
-  book$ = this.bookSubject.asObservable();
+  private readonly isMarkedToReadSubject = new BehaviorSubject(false);
+  isMarkedToRead$ = this.isMarkedToReadSubject.asObservable();
 
   ngOnInit() {
     this.bookService.getBookById(Number(this.activatedRoute.snapshot.paramMap.get('id'))).subscribe({
@@ -62,24 +70,60 @@ export class BookDetailsComponent {
         this.bookSubject.next(value);
       },
       error: (response) => {
-        this.router.navigate(['not-found'], { replaceUrl: true });
+        this.router.navigate(['not-found'], {replaceUrl: true});
 
         throw response.error.title;
       }
     })
 
-    const id = this.authenticationService.getUserInfoData().id;
+    if (this.userInfo.id) {
+      this.user$ = this.usersService.getUserProfileById(this.userInfo.id);
 
-    if (id) {
-      this.user$ = this.usersService.getUserProfileById(id);
+      this.booksToReadService.getBooksToRead().subscribe({
+        next: (books) => {
+          this.isMarkedToReadSubject.next(books.find(bu => bu.bookId ===
+            Number(this.activatedRoute.snapshot.paramMap.get('id'))) !== undefined);
+        }
+      })
+    }
+  }
+
+  addBookToRead(): void {
+    const userId = this.authenticationService.getUserInfoData().id;
+
+    if (userId) {
+      this.booksToReadService.addUserBook({
+        bookId: this.bookSubject.getValue().id,
+        userId: userId
+      } as AddUserBookModel)
     } else {
-      this.router.navigate(['/dashboard']);
+      console.error('You need to be logged in to add to the reading list!');
 
-      console.error('Invalid UserId!');
+      this.router.navigate(['/login']);
+    }
+  }
+
+  removeBookFromToRead(): void {
+    const userId = this.authenticationService.getUserInfoData().id;
+
+    if (userId) {
+      this.booksToReadService.removeUserBook(this.bookSubject.getValue().id);
+    } else {
+      console.error('You need to be logged in to remove book from the reading list!');
+
+      this.router.navigate(['/login']);
     }
   }
 
   openDialog(enterAnimationDuration: string, exitAnimationDuration: string, book: BookModel): void {
+    if (!this.userInfo.role || this.userInfo.role !== 'user') {
+      console.error('You need to be logged in to borrow a book!');
+
+      this.router.navigate(['/login']);
+
+      return;
+    }
+
     if (this.library) {
       this.libraryBooksService.getBookLibrary(book.id, this.library.id).subscribe({
         next: (bookLibrary) => {

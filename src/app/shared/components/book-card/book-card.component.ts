@@ -8,8 +8,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { BooksToReadService } from 'src/app/core/services/books-to-read/books-to-read.service';
 import { AuthenticationService } from 'src/app/core/services/authentication/authentication.service';
+
 import AddUserBookModel from '../../models/books-to-read/add-book-to-read.model';
 import BookCardModel from '../../models/books/book-card.model';
+import BookLibraryModel from "../../models/book-library/book-library.model";
 
 @Component({
   selector: 'app-book-card',
@@ -20,14 +22,14 @@ import BookCardModel from '../../models/books/book-card.model';
 })
 export class BookCardComponent {
   @Input() book: BookCardModel = {} as BookCardModel;
+  @Input() bookLibrary: BookLibraryModel | null = null;
   @Input() isMarkedToRead: boolean = false;
 
   private readonly router = inject(Router);
-  userRole = this.authenticationService.getUserInfoData().role;
+  private readonly booksToReadService = inject(BooksToReadService);
+  private readonly authenticationService = inject(AuthenticationService);
 
-  constructor(
-    private readonly booksToReadService: BooksToReadService,
-    private readonly authenticationService: AuthenticationService) { }
+  userRole: string = this.authenticationService.getUserInfoData().role;
 
   addBookToRead(): void {
     const userId = this.authenticationService.getUserInfoData().id;
@@ -38,15 +40,21 @@ export class BookCardComponent {
         userId: userId
       } as AddUserBookModel)
     } else {
+      console.error('You need to be logged in to add to the reading list!');
+
       this.router.navigate(['/login']);
     }
   }
 
-  // removeBookToRead(bookId: number): void {
-  //   const userId = this.authenticationService.getUserInfoData().id;
+  removeBookFromToRead(): void {
+    const userId = this.authenticationService.getUserInfoData().id;
 
-  //   if(userId) {
-  //     this.booksToReadService.removeUserBook()
-  //   }
-  // }
+    if (userId) {
+      this.booksToReadService.removeUserBook(this.book.id);
+    } else {
+      console.error('You need to be logged in to remove book from the reading list!');
+
+      this.router.navigate(['/login']);
+    }
+  }
 }

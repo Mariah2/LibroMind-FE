@@ -1,0 +1,23 @@
+<div class="p-2 text-secondary-darker w-full">
+    <h1 mat-dialog-title>Search for a book to add to the library:</h1>
+    <form [formGroup]="addBookForm" (submit)="onSubmit()">
+        <mat-form-field appearance="outline" class="w-72">
+            <input matInput type="text" placeholder="Title or Author" formControlName="bookSearch" [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayBookName"
+                (optionSelected)="onSelectionChange($event)">
+                <mat-option *ngFor="let bookCard of bookCards$ | async" [value]="bookCard">
+                    <app-add-book-card [book]="bookCard"></app-add-book-card>
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="w-72">
+            <input matInput type="number" formControlName="quantity" placeholder="Quantity">
+        </mat-form-field>
+
+        <div mat-dialog-actions class="grid grid-cols-2 justify-center">
+            <button type="button" class mat-button mat-dialog-close (click)="closeDialog()">Back</button>
+            <button class mat-button mat-dialog-close cdkFocusInitial [disabled]="!bookIdToAdd">Add Book!</button>
+        </div>
+    </form>
+</div>

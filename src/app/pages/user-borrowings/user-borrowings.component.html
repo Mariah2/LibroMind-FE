@@ -1,25 +1,52 @@
-<div class="overflow-y-auto h-full">
-    <mat-card *ngFor="let borrowing of borrowings$ | async" class="flex flex-row w-3/4">
-        <img [src]="borrowing.book.coverUrl" class="h-32">
+<div class="grid lg:grid-cols-2 grid-cols-1 px-8 py-2 gap-4 justify-items-center overflow-y-auto max-h-full max-w-fit
+  mx-auto">
+  <mat-card *ngFor="let borrowing of borrowings$ | async" class="flex flex-row max-sm:justify-center max-sm:flex-wrap
+  max-sm:gap-2 h-fit w-full max-w-2xl">
+    <img [src]="borrowing.book.coverUrl" class="h-32 p-2 self-center">
 
-        <div class="flex flex-col justify-between">
-            <div>
-                <h1>{{borrowing.book.title}}</h1>
-                <span>de {{borrowing.book.author.firstName}} {{borrowing.book.author.lastName}}</span>
-            </div>
+    <div class="flex flex-col justify-between w-6/12">
+      <div>
+        <h1>{{borrowing.book.title}}</h1>
+        <span>by {{borrowing.book.author.firstName}} {{borrowing.book.author.lastName}}</span>
+      </div>
 
-            <div class="flex flex-col">
-                <span>Utilizator: {{borrowing.user.email}}</span>
-                <span>Data limita a returnarii: {{borrowing.returnDate | date}}</span>
-            </div>
-        </div>
+      <div class="flex flex-col">
+        <span class="whitespace-nowrap">
+          User: {{borrowing.user.firstName}} {{borrowing.user.lastName}}
+        </span>
 
-        <button type="button" mat-button
-            *ngIf="borrowing.wasExtensionRequested === false && borrowing.hasReturnedBook === false"
-            (click)="requestExtensionForBorrowing(borrowing.id)">Request extension</button>
+        <p>
+          <span *ngIf="borrowing.hasReturnedBook !== true">Return date deadline: </span>
 
-        <button mat-icon-button *ngIf="borrowing.hasReturnedBook === null" (click)="cancelBorrowing(borrowing.id)">
-            <mat-icon>close</mat-icon>
+          <span *ngIf="borrowing.hasReturnedBook === true">Date of return: </span>
+
+          <span class="whitespace-nowrap">{{borrowing.returnDate | date:'dd/MM/YY'}}</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="flex flex-col justify-between max-sm:items-center sm:w-5/12 w-full mb-1.5">
+      <div class="flex justify-end">
+        <button class="h-12" mat-icon-button *ngIf="borrowing.hasReturnedBook === null"
+                (click)="cancelBorrowing(borrowing.id)">
+          <mat-icon>close</mat-icon>
         </button>
-    </mat-card>
+      </div>
+
+      <button type="button" mat-button class="w-40 h-10 mx-5 bg-secondary hover:bg-secondary-alt text-white"
+              *ngIf="borrowing.wasExtensionRequested === false && borrowing.hasReturnedBook === false; else empty"
+              (click)="requestExtensionForBorrowing(borrowing.id)">Request extension
+      </button>
+
+      <button class="w-40 h-10 mx-5 border-2 border-solid border-secondary rounded-md text-secondary" type="button"
+              disabled mat-button
+              *ngIf="borrowing.wasExtensionRequested === true && borrowing.hasReturnedBook === false">
+        Extension requested
+      </button>
+    </div>
+  </mat-card>
 </div>
+
+<ng-template #empty>
+  <button type="button" disabled mat-button class="w-40 h-10 mx-5 content-none"></button>
+</ng-template>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -30,21 +30,25 @@ import { BooksToReadService } from 'src/app/core/services/books-to-read/books-to
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  private readonly authenticationService: AuthenticationService = inject(AuthenticationService);
+  private readonly booksToReadService: BooksToReadService = inject(BooksToReadService);
+
   hide = true;
-  loginForm: FormGroup = new FormGroup({
-    email: new FormControl("", Validators.email),
-    password: new FormControl(""),
+  loginForm = new FormGroup({
+    email: new FormControl("", [Validators.email, Validators.required]),
+    password: new FormControl("", [Validators.required]),
   });
 
-  constructor(
-    private readonly authenticationService: AuthenticationService,
-    private readonly booksToReadService: BooksToReadService) { }
+  onSubmit(): void {
+    const values = this.loginForm.value;
 
-  async onSubmit(): Promise<void> {
-    const {email, password} = this.loginForm.value;
-
-    await this.authenticationService.login({email, password}).then(() => {
-      this.booksToReadService.setBooksToRead();
-    });
+    if (this.loginForm.valid) {
+      this.authenticationService.login({
+        email: values.email as string,
+        password: values.password as string,
+      }).then(() => {
+        this.booksToReadService.setBooksToRead();
+      });
+    }
   }
 }

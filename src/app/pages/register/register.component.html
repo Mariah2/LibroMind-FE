@@ -1,66 +1,139 @@
-<div class="bg-secondary h-full px-96 py-12">
-    <form class="grid grid-cols-2 h-full justify-items-center bg-white rounded-md mat-elevation-z20">
-        <h1 class="col-span-2 mt-6 mb-1 text-2xl font-bold">Register</h1>
+<div class="bg-secondary flex h-full px-4 py-12">
+  <div class="flex flex-col items-center justify-items-center h-full w-full max-h-lg max-w-2xl m-auto bg-white rounded-md
+                overflow-y-auto mat-elevation-z20">
+    <form [formGroup]="registerForm" (submit)="onSubmit()" class="flex flex-col items-center justify-items-center">
+      <h1 class="mt-6 mb-1 text-2xl font-bold">Register</h1>
 
-        <span class="col-span-2 font-mono font-medium text-secondary">Please fill out this form in order to create an
+      <span class="px-2 font-mono font-medium text-center text-secondary">Please fill out this form in order to create an
             account.</span>
 
+      <div class="grid md:grid-cols-2 grid-cols-1 gap-8 px-4 my-4">
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>First Name</mat-label>
-            <input matInput placeholder="First Name">
+          <mat-label>First Name</mat-label>
+
+          <input matInput formControlName="firstName" placeholder="First Name">
+
+          <mat-error *ngIf="registerForm.controls.firstName.invalid && registerForm.controls.firstName.errors">
+            <span *ngIf="registerForm.controls.firstName.errors['required']">Field required!</span>
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>Last Name</mat-label>
-            <input matInput placeholder="Last Name">
+          <mat-label>Last Name</mat-label>
+
+          <input matInput formControlName="lastName" placeholder="Last Name">
+
+          <mat-error *ngIf="registerForm.controls.lastName.invalid && registerForm.controls.lastName.errors">
+            <span *ngIf="registerForm.controls.lastName.errors['required']">Field required!</span>
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="Email">
+          <mat-label>Email</mat-label>
+
+          <input matInput formControlName="email" placeholder="Email">
+
+          <mat-error *ngIf="registerForm.controls.email.invalid && registerForm.controls.email.errors">
+            <span *ngIf="registerForm.controls.email.errors['required']">Field required!</span>
+
+            <span *ngIf="registerForm.controls.email.errors['email']">Invalid email!</span>
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>Phone Number</mat-label>
-            <input matInput placeholder="Phone Number">
+          <mat-label>Phone Number</mat-label>
+
+          <input matInput formControlName="phone" placeholder="Phone Number">
+
+          <mat-error *ngIf="registerForm.controls.phone.invalid && registerForm.controls.phone.errors">
+            <span *ngIf="registerForm.controls.phone.errors['required']">Field required!</span>
+
+            <span *ngIf="registerForm.controls.phone.errors['pattern']">Use only digits from 0 to 9</span>
+
+            <span *ngIf="registerForm.controls.phone.errors['minlength']">
+              Minimum length is {{registerForm.controls.phone.errors['minlength'].requiredLength}}
+            </span>
+
+            <span *ngIf="registerForm.controls.phone.errors['maxlength']">
+              Maximum length is {{registerForm.controls.phone.errors['maxlength'].requiredLength}}
+            </span>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="h-16 w-64" color="accent" appearance="outline" [class.mb-8]="registerForm.controls.password.errors &&
+           registerForm.controls.password.errors['pattern'] && (registerForm.controls.password.touched)">
+          <mat-label>Password</mat-label>
+
+          <input matInput formControlName="password" (focus)="registerForm.controls.passwordConfirmation.reset()"
+                 [type]="hide ? 'password' : 'text'">
+
+          <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="hide">
+            <mat-icon class="mr-3 text-[#757575]">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+
+          <mat-error class="text-justify w-64 -translate-x-5" *ngIf="registerForm.controls.password.invalid &&
+            registerForm.controls.password.errors">
+            <span class="ml-4" *ngIf="registerForm.controls.password.errors['required']">Field required!</span>
+
+            <span *ngIf="registerForm.controls.password.errors['pattern']">
+              Password must be at least 8 characters long, include 1 upper case,
+              1 lower case and 1 number or special character
+            </span>
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>Password</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'">
-            <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide">
-                <mat-icon class="mr-3 text-[#757575]">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
+          <mat-label>Confirm password</mat-label>
+
+          <input matInput formControlName="passwordConfirmation" [type]="hideConfirm ? 'password' : 'text'">
+
+          <button type="button" mat-icon-button matSuffix (click)="hideConfirm = !hideConfirm"
+                  [attr.aria-label]="'Hide password confirmation'" [attr.aria-pressed]="hideConfirm">
+            <mat-icon class="mr-3 text-[#757575]" color="dark-background">{{hideConfirm ? 'visibility_off' :
+              'visibility'}}</mat-icon>
+          </button>
+
+          <mat-error *ngIf="registerForm.controls.passwordConfirmation.invalid &&
+            registerForm.controls.passwordConfirmation.errors">
+            <span *ngIf="registerForm.controls.passwordConfirmation.errors['required']">Field required! </span>
+
+            <span *ngIf="registerForm.controls.passwordConfirmation.errors['passwordMismatch']">
+              {{registerForm.controls.passwordConfirmation.errors['passwordMismatch']}}
+            </span>
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>Confirm password</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'">
-            <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide">
-                <mat-icon class="mr-3 text-[#757575]" color="dark-background">{{hide ? 'visibility_off' :
-                    'visibility'}}</mat-icon>
-            </button>
+          <mat-label>Birth Date</mat-label>
+
+          <input matInput formControlName="birthDate" [matDatepicker]="picker">
+
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+
+          <mat-datepicker #picker></mat-datepicker>
+
+          <mat-error *ngIf="registerForm.controls.birthDate.invalid && registerForm.controls.birthDate.errors">
+            <span *ngIf="registerForm.controls.birthDate.errors['required']">Field required!</span>
+
+            <span *ngIf="registerForm.controls.birthDate.errors['invalidAge']">
+              {{registerForm.controls.birthDate.errors['invalidAge']}}
+            </span>
+          </mat-error>
         </mat-form-field>
+      </div>
 
-        <mat-form-field class="h-16 w-64" color="accent" appearance="outline">
-            <mat-label>Birth Date</mat-label>
-            <input matInput [matDatepicker]="picker">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
+      <button mat-button
+              class="w-40 h-10 col-span-2 bg-secondary hover:bg-secondary-alt text-white">
+        Register
+      </button>
 
-        <button mat-button class="w-40 h-10 col-span-2 bg-secondary hover:bg-secondary-alt text-white">
-            Register
-        </button>
-
-        <span class="col-span-2 font-mono font-medium text-secondary mt-4 mb-4">
-            Already have an account?<a mat-button class="col-span-2" [routerLink]="['/login']">
-                <span class="font-bold font-mono"> Login</span>
-            </a>
-        </span>
+      <span class="font-mono font-medium text-secondary my-4">
+        Already have an account?
+        <a type="button" mat-button [routerLink]="['/login']">
+          <span class="font-bold font-mono">Login</span>
+        </a>
+      </span>
     </form>
-
-
+  </div>
 </div>

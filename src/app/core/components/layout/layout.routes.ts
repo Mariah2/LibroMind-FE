@@ -1,6 +1,7 @@
 import { Route } from "@angular/router";
 import { CanActivateUser } from "../../services/authentication/can-activate-user.service";
 import { CanActivateLibrarian } from "../../services/authentication/can-activate-librarian.service";
+import { CanActivateLoggedInService } from "../../services/authentication/can-activate-logged-in.service";
 
 export const routes: Route[] = [
   {
@@ -42,7 +43,7 @@ export const routes: Route[] = [
     path: "profile",
     loadComponent: () => import("../../../pages/profile/profile.component")
       .then((m) => m.ProfileComponent),
-    canActivate: [CanActivateUser]
+    canActivate: [CanActivateLoggedInService]
   },
   {
     path: "user/books",

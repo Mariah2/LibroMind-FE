@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import AddBorrowingModel from 'src/app/shared/models/borrowings/add-borrowing.model';
@@ -17,7 +17,7 @@ export class BorrowingsService {
   })
 
   addBorrowing(borrowing: AddBorrowingModel): Observable<any> {
-    return this.http.post(`${this.apiUrl}/borrow`, borrowing, { headers: this.headers });
+    return this.http.post(`${this.apiUrl}/borrow`, borrowing, {headers: this.headers});
   }
 
   deleteBorrowing(id: number): Observable<any> {
@@ -27,7 +27,7 @@ export class BorrowingsService {
   acceptBorrowing(id: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/borrow/${id}/accept`, {}, {headers: this.headers});
   }
-  
+
   extendBorrowing(id: number): Observable<any> {
     return this.http.put(`${this.apiUrl}/borrow/${id}/extend`, {}, {headers: this.headers});
   }
@@ -46,5 +46,14 @@ export class BorrowingsService {
 
   getBorrowingsByUserId(userId: number): Observable<BorrowingDetailsModel[]> {
     return this.http.get<BorrowingDetailsModel[]>(`${this.apiUrl}/borrow/users/${userId}`, {headers: this.headers});
+  }
+
+  getBorrowingsByLibraryIdAndParam(libraryid: number, param: string | null): Observable<BorrowingDetailsModel[]> {
+    const params = new HttpParams().set('searchParam', param ?? "")
+
+    return this.http.get<BorrowingDetailsModel[]>(`${this.apiUrl}/borrow/libraries/${libraryid}/filter`, {
+      headers: this.headers,
+      params: params
+    })
   }
 }

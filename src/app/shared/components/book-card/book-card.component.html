@@ -1,37 +1,49 @@
-<mat-card *ngIf="book" class="max-w-xs w-72 m-5">
-    <a [routerLink]="['/books', book.id]" class="flex flex-col align-items-center">
-        <img src={{book.coverUrl}} alt="Cover photo" class="h-32 object-contain my-5 drop-shadow-lg">
-        <div *ngIf="book.author" class="grid grid-rows-2 justify-items-center">
-            <a [routerLink]="['/books', book.id]" class="text-xl font-sans font-bold">{{book.title}}</a>
-            <span matTooltipClass="multiline-tooltip"
-                matTooltip="Nationalitate: {{book.author.nationality}}&#10;Data de naștere: {{book.author.birthDate | date}}"
-                matTooltipPosition="right" class="text-gray-500 text-lg font-sans">{{book.author.firstName}}
-                {{book.author.lastName}}</span>
-        </div>
-    </a>
-    <div class="grid grid-rows-2 justify-items-center mb-4">
-        <span class="flex justify-center text-secondary m-2 items-center">
-            <span class="mr-2 font-sans font-semibold">{{book.rating === 0 ? 'No reviews' : book.rating + '/10'}}</span>
-            <mat-icon>star</mat-icon>
-        </span>
-        <ng-container *ngIf="!userRole || userRole === 'user'">
-            <button type="button"
-                *ngIf="book.isMarkedToRead === false || (book.isMarkedToRead === undefined && isMarkedToRead === false)"
-                mat-button (click)="addBookToRead()"
-                class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
-                <span class="mr-2 font-sans font-semibold">I want to read</span>
-                <mat-icon>bookmarks</mat-icon>
-            </button>
-            <button type="button" *ngIf="book.isMarkedToRead || isMarkedToRead" mat-button
-                class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
-                <span class="mr-2 font-sans font-semibold text-xs">Remove from my list</span>
-                <mat-icon class="material-icons-outlined">bookmarks</mat-icon>
-            </button>
-        </ng-container>
-        <button type="button" *ngIf="userRole === 'librarian'" mat-button
-            class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
-            <span class="mr-2 font-sans font-semibold text-xs">Edit Book</span>
-            <mat-icon class="material-icons-outlined">edit</mat-icon>
-        </button>
+<mat-card *ngIf="book" class="max-w-xs w-72 drop-shadow-lg">
+  <a [routerLink]="['/books', book.id]" class="flex flex-col align-items-center">
+    <img src="{{book.coverUrl && book.coverUrl.length > 0 ? book.coverUrl : 'assets/no-cover.jpg'}}"
+         alt="Cover photo" class="h-32 object-contain my-5 drop-shadow-lg">
+
+    <div *ngIf="book.author" class="grid grid-rows-2 justify-items-center">
+      <a [routerLink]="['/books', book.id]" class="text-xl font-sans font-bold">{{book.title}}</a>
+
+      <span matTooltipClass="multiline-tooltip"
+            matTooltip="Nationalitate: {{book.author.nationality}}&#10;Data de naștere: {{book.author.birthDate | date}}"
+            matTooltipPosition="right" class="text-gray-500 text-lg font-sans">{{book.author.firstName}}
+        {{book.author.lastName}}
+      </span>
     </div>
+  </a>
+
+  <div class="grid grid-rows-2 justify-items-center mb-4">
+    <span class="flex justify-center text-secondary m-2 items-center">
+        <span class="mr-2 font-sans font-semibold">{{book.rating === 0 ? 'No reviews' : book.rating + '/10'}}</span>
+
+        <mat-icon>star</mat-icon>
+    </span>
+
+    <ng-container *ngIf="!userRole || userRole === 'user'">
+      <button type="button"
+              *ngIf="book.isMarkedToRead === false || (book.isMarkedToRead === undefined && isMarkedToRead === false)"
+              mat-button (click)="addBookToRead()"
+              class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
+        <span class="mr-2 font-sans font-semibold">I want to read</span>
+
+        <mat-icon>bookmarks</mat-icon>
+      </button>
+
+      <button type="button" *ngIf="book.isMarkedToRead || isMarkedToRead" mat-button (click)="removeBookFromToRead()"
+              class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
+        <span class="mr-2 font-sans font-semibold text-xs">Remove from my list</span>
+
+        <mat-icon class="material-icons-outlined">bookmarks</mat-icon>
+      </button>
+    </ng-container>
+
+    <button type="button" *ngIf="userRole === 'librarian'" mat-button
+            class="flex justify-center w-40 h-9 bg-secondary hover:bg-secondary-alt text-white m-2 items-center rounded-3xl">
+      <span class="mr-2 font-sans font-semibold text-xs">Edit Quantity ({{bookLibrary?.quantity ? bookLibrary?.quantity : 0}})</span>
+
+      <mat-icon class="material-icons-outlined">edit</mat-icon>
+    </button>
+  </div>
 </mat-card>
